@@ -3,6 +3,7 @@ import { ConnectedRouter } from "react-router-redux";
 import { Route, Redirect } from "react-router-dom";
 import { history } from "../store/store.js";
 import { connect } from "react-redux";
+import { SignIn } from '../containers/SignIn'
 
 
 
@@ -36,29 +37,28 @@ const PublicRoute = ({ component: Component, authenticated, ...props }) => {
   );
 };
 
-class App extends Component {
-  render(){
+const App = ({authenticated}) =>{
     return (
       <ConnectedRouter history={history}>
         <PublicRoute
-          authenticated={this.props.authenticated}
+          authenticated={authenticated}
           path="/signup"
           component={SignUp}
         />
         <PublicRoute
-          authenticated={this.props.authenticated}
+          authenticated={authenticated}
           exact
-          path="/"
-          component={LogIn}
+          path="/signin"
+          component={SignIn}
         />
         <PrivateRoute
-          authenticated={this.props.authenticated}
+          authenticated={authenticated}
           path="/home"
           component={Home}
         />
       </ConnectedRouter>
     )
-  }
 }
+
  
 export default App
