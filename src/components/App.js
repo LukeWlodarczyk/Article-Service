@@ -3,7 +3,7 @@ import { ConnectedRouter } from "react-router-redux";
 import { Route, Redirect } from "react-router-dom";
 import { history } from "../store/store.js";
 import { connect } from "react-redux";
-import { SignIn } from '../containers/SignIn'
+import { SignIn, SignUp, Home } from '../containers/SignIn'
 
 
 
