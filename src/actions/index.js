@@ -52,6 +52,7 @@ export const signUpUser = ({ email, password }) => (dispatch) => {
   console.log('start');
   auth.doCreateUserWithEmailAndPassword(email, password)
     .then( user => {
+      user.sendEmailVerification();
       dispatch(authUser(user));
       console.log('success');
     })

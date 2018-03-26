@@ -1,7 +1,8 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { signInUser } from '../actions/index'
+import { signInUser } from '../actions/index';
+import { Link } from 'react-router-dom'
 
 const validate = values => {
   const errors = {};
@@ -50,6 +51,7 @@ class SignIn extends React.Component {
             <Field name="password" component={this.renderField} className="" type="password" label="Password"/>
 
             <button action="submit" className="">Sign In</button>
+            <Link to='/forgot-password'>forgot password?</Link>
           </form>
         </div>
       </div>

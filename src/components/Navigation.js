@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import SignOutButton from './SignOutButton'
 
 
 const Navigation = ({ authenticated }) => (
@@ -22,6 +22,10 @@ const Navigation = ({ authenticated }) => (
               <li className="">
                   <Link className="" to="/add-offert">Add offert</Link>
               </li>
+              <li className="">
+                  <Link className="" to="/account">Account</Link>
+              </li>
+              <SignOutButton />
           </ul>
       </div>
   </nav>

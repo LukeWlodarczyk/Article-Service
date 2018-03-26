@@ -35,7 +35,7 @@ const SignInUpRoute = ({ component: Component, authenticated, ...props }) => {
         !authenticated ? (
           <Component {...props} />
         ) : (
-          <Redirect to="/home" />
+          <Redirect to="/" />
         )
       }
     />
@@ -53,9 +53,13 @@ const App = ({ authenticated }) =>{
           <Route path='/offerts' component={Offerts} />
           <PrivateRoute
             authenticated={authenticated}
-            exact
             path="/add-offert"
             component={AddOffert}
+          />
+          <PrivateRoute
+            authenticated={authenticated}
+            path="/account"
+            component={Account}
           />
           <SignInUpRoute
             authenticated={authenticated}

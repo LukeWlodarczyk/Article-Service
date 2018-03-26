@@ -1,12 +1,25 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
 
 class Account extends Component {
+  constructor(props) {
+    super(props)
+  }
+
   render() {
-    return (
-      <div>Account</div>
-    );
+    console.log(this.props.authenticated.emailVerified);
+    const { emailVerified } = this.props.authenticated;
+    if(!emailVerified) {
+      return <p>Please verify your email</p>
+    }
+    return <p>account</p>
   }
 }
 
-
-export default Account;
+const mapStateToProps = (state) => {
+  return {
+    authenticated: state.auth.authenticated
+  }
+}
+ 
+export default connect(mapStateToProps)(Account)
