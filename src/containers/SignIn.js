@@ -16,10 +16,6 @@ const validate = values => {
     errors.password = "Please enter a password.";
   }
 
-  if (values.password.length<7) {
-    errors.password = "Please should contain at least 6 characters";
-  }
-
   return errors;
 };
 
@@ -31,25 +27,25 @@ class SignIn extends React.Component {
 
   renderField = ({ input, label, type, meta: { touched, error } }) => (
     <fieldset className={`form-group ${touched && error ? 'has-error' : ''}`}>
-      <label className="">{label}</label>
+      <label className="control-label">{label}</label>
       <div>
-        <input {...input} placeholder={label} className="" type={type} />
-        {touched && error && <div className="">{error}</div>}
+        <input {...input} placeholder={label} className="form-control" type={type} />
+        {touched && error && <div className="help-block">{error}</div>}
       </div>
     </fieldset>
   );
 
 
   render() {
-    const { authError } = this.props;
+    const { authError, handleSubmit } = this.props;
     return(
       <div className="container">
         <div className="">
           <h2 className="">Log In</h2>
 
-          { authError && <div className="">{ this.props.authenticationError }</div> }
+          { authError && <div className="">{ authError }</div> }
 
-          <form onSubmit={this.props.handleSubmit(this.handleFormSubmit)}>
+          <form onSubmit={handleSubmit(this.handleFormSubmit)}>
             <Field name="email" component={this.renderField} className="" type="text" label="Email"/>
             <Field name="password" component={this.renderField} className="" type="password" label="Password"/>
 

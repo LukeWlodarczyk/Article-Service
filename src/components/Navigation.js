@@ -1,17 +1,30 @@
-export default Header = () => (
-      <nav className="navbar navbar-default">
-          <div className="container-fluid">
-              <div className="navbar-header">
-                  <Link className="navbar-brand" to="/"></Link>
-              </div>
-              <ul className="nav navbar-nav navbar-right">
-                  <li className="nav-item">
-                      <Link className="nav-link" to="/login">Login</Link>
-                  </li>
-                  <li className="nav-item">
-                      <Link className="nav-link" to="/signup">Signup</Link>
-                  </li>
-              </ul>
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+
+
+const Navigation = ({ authenticated }) => (
+  <nav className="">
+      <div className="">
+          <div className="">
+              <Link className="" to="/">home</Link>
           </div>
-      </nav>
-    )
+          <ul className="">
+              <li className="">
+                  <Link className="" to="/signup">Sign up</Link>
+              </li>
+              <li className="">
+                  <Link className="" to="/signin">Sign in</Link>
+              </li>
+              <li className="">
+                  <Link className="" to="/offerts">Offerts</Link>
+              </li>
+              <li className="">
+                  <Link className="" to="/add-offert">Add offert</Link>
+              </li>
+          </ul>
+      </div>
+  </nav>
+)
+
+export default Navigation;

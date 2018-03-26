@@ -3,8 +3,13 @@ import { ConnectedRouter } from "react-router-redux";
 import { Route, Redirect } from "react-router-dom";
 import { history } from "../store/store.js";
 import { connect } from "react-redux";
-import { SignIn, SignUp, Home } from '../containers/SignIn'
-
+import SignIn from '../containers/SignIn';
+import SignUp from '../containers/SignUp';
+import Home from '../containers/Home';
+import Navigation from './Navigation';
+import Account from '../containers/Account';
+import AddOffert from '../containers/AddOffert';
+import Offerts from '../containers/Offerts';
 
 
 const PrivateRoute = ({ component: Component, authenticated, ...props }) => {
@@ -12,7 +17,7 @@ const PrivateRoute = ({ component: Component, authenticated, ...props }) => {
     <Route
       {...props}
       render={props =>
-        authenticated === true ? (
+        authenticated ? (
           <Component {...props} />
         ) : (
           <Redirect to={{ pathname: "/", state: { from: props.location } }} />
@@ -22,12 +27,12 @@ const PrivateRoute = ({ component: Component, authenticated, ...props }) => {
   );
 };
 
-const PublicRoute = ({ component: Component, authenticated, ...props }) => {
+const SignInUpRoute = ({ component: Component, authenticated, ...props }) => {
   return (
     <Route
       {...props}
       render={props =>
-        authenticated === false ? (
+        !authenticated ? (
           <Component {...props} />
         ) : (
           <Redirect to="/home" />
@@ -37,28 +42,41 @@ const PublicRoute = ({ component: Component, authenticated, ...props }) => {
   );
 };
 
-const App = ({authenticated}) =>{
+
+
+const App = ({ authenticated }) =>{
     return (
       <ConnectedRouter history={history}>
-        <PublicRoute
-          authenticated={authenticated}
-          path="/signup"
-          component={SignUp}
-        />
-        <PublicRoute
-          authenticated={authenticated}
-          exact
-          path="/signin"
-          component={SignIn}
-        />
-        <PrivateRoute
-          authenticated={authenticated}
-          path="/home"
-          component={Home}
-        />
+        <div>
+          <Navigation authenticate={authenticated} />
+          <Route exact path='/' component={Home} />
+          <Route path='/offerts' component={Offerts} />
+          <PrivateRoute
+            authenticated={authenticated}
+            exact
+            path="/add-offert"
+            component={AddOffert}
+          />
+          <SignInUpRoute
+            authenticated={authenticated}
+            path="/signin"
+            component={SignIn}
+          />
+          <SignInUpRoute
+            authenticated={authenticated}
+            path="/signup"
+            component={SignUp}
+          />
+        </div>
       </ConnectedRouter>
     )
 }
 
+
+const mapStateToProps = (state) => {
+  return {
+    authenticated: state.auth.authenticated
+  }
+}
  
-export default App
+export default connect(mapStateToProps)(App)
