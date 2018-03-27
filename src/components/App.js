@@ -10,6 +10,7 @@ import Navigation from './Navigation';
 import Account from '../containers/Account';
 import AddOffert from '../containers/AddOffert';
 import Offerts from '../containers/Offerts';
+import * as routes from '../constants/routes'
 
 
 const PrivateRoute = ({ component: Component, authenticated, ...props }) => {
@@ -49,7 +50,7 @@ const App = ({ authenticated }) =>{
       <ConnectedRouter history={history}>
         <div>
           <Navigation authenticate={authenticated} />
-          <Route exact path='/' component={Home} />
+          <Route exact path='routes.HOME' component={Home} />
           <Route path='/offerts' component={Offerts} />
           <PrivateRoute
             authenticated={authenticated}
