@@ -2,7 +2,8 @@ import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { signInUser } from '../actions/index';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { PASSWORD_FORGET } from '../constants/routes';
 
 const validate = values => {
   const errors = {};
@@ -20,25 +21,21 @@ const validate = values => {
   return errors;
 };
 
-class SignIn extends React.Component {
+const handleFormSubmit = (signInUser, values) => {
+  signInUser(values);
+};
 
-  handleFormSubmit = (values) => {
-    this.props.signInUser(values);
-  };
+const renderField = ({ input, label, type, meta: { touched, error } }) => (
+  <fieldset className={`form-group ${touched && error ? 'has-error' : ''}`}>
+    <label className="control-label">{label}</label>
+    <div>
+      <input {...input} placeholder={label} className="form-control" type={type} />
+      {touched && error && <div className="help-block">{error}</div>}
+    </div>
+  </fieldset>
+);
 
-  renderField = ({ input, label, type, meta: { touched, error } }) => (
-    <fieldset className={`form-group ${touched && error ? 'has-error' : ''}`}>
-      <label className="control-label">{label}</label>
-      <div>
-        <input {...input} placeholder={label} className="form-control" type={type} />
-        {touched && error && <div className="help-block">{error}</div>}
-      </div>
-    </fieldset>
-  );
-
-
-  render() {
-    const { authError, handleSubmit } = this.props;
+const SignIn = ({ authError, handleSubmit, signInUser}) => {
     return(
       <div className="container">
         <div className="">
@@ -46,18 +43,18 @@ class SignIn extends React.Component {
 
           { authError && <div className="">{ authError }</div> }
 
-          <form onSubmit={handleSubmit(this.handleFormSubmit)}>
-            <Field name="email" component={this.renderField} className="" type="text" label="Email"/>
-            <Field name="password" component={this.renderField} className="" type="password" label="Password"/>
+          <form onSubmit={handleSubmit(handleFormSubmit.bind(null, signInUser))}>
+            <Field name="email" component={renderField} className="" type="text" label="Email"/>
+            <Field name="password" component={renderField} className="" type="password" label="Password"/>
 
             <button action="submit" className="">Sign In</button>
-            <Link to='/forgot-password'>forgot password?</Link>
+            <Link to='/forgot-password'>forgot password{'?'}</Link>
           </form>
         </div>
       </div>
     );
   }
-}
+
 
 const mapStateToProps = (state) => {
   return {
@@ -65,7 +62,7 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { signInUser })(reduxForm({
+export default connect(mapStateToProps, { signInUser }) (reduxForm({
   form: 'login',
   validate
 })(SignIn));

@@ -62,7 +62,7 @@ class SignUp extends React.Component {
             <button type="submit" className="btn btn-primary">Sign Up</button>
             <div>
             <Link to="/signin" className="btn">
-              Already a member? yet Log in
+              Already a member{'?'} yet Log in
             </Link>
             </div>
           </form>
