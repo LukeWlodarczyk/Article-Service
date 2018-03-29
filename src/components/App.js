@@ -10,6 +10,7 @@ import Navigation from './Navigation';
 import Account from '../containers/Account';
 import AddOffert from '../containers/AddOffert';
 import Offerts from '../containers/Offerts';
+import PasswordForgetForm from '../containers/PasswordForgetForm';
 import * as routes from '../constants/routes'
 
 
@@ -71,6 +72,11 @@ const App = ({ authenticated }) =>{
             authenticated={authenticated}
             path={routes.SIGN_UP}
             component={SignUp}
+          />
+          <SignInUpRoute
+            authenticated={authenticated}
+            path={routes.PASSWORD_FORGET}
+            component={PasswordForgetForm}
           />
         </div>
       </ConnectedRouter>

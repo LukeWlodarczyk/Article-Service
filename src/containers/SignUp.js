@@ -23,9 +23,7 @@ function validate(values) {
   return errors;
 }
 
-
-class SignUp extends React.Component {
-  renderSignUp = field => {
+  const renderSignUp = field => {
     const {input, label, type, meta: { touched, error } } = field;
     const className = `form-group${touched && error ? "has-error" : ""}`;
     return (
@@ -40,39 +38,37 @@ class SignUp extends React.Component {
       </fieldset>
     );
   };
-  signUp = values => {
-    console.log(values);
-    this.props.signUpUser(values);
+
+  const signUp = (signUpUser, values) => {
+    signUpUser(values);
   };
 
 
-  render() {
-    const { handleSubmit } = this.props;
+const  SignUp = ({ authError, handleSubmit, signUpUser}) => {
 
-    return(
-      <div className="container">
-        <div className="">
-          <h2 className="text-center">Sign Up</h2>
-          {this.props.authError && <div className="alert alert-danger"> {this.props.authError}  </div>}
+  return(
+    <div className="container">
+      <div className="">
+        <h2 className="text-center">Sign Up</h2>
+        {authError && <div className="alert alert-danger"> {authError}  </div>}
 
-          <form onSubmit={handleSubmit(this.signUp)}>
-            <Field name="email" component={this.renderSignUp} label="Email" type="email" />
-            <Field name="password" component={this.renderSignUp} label="Password" type="password" />
-            <Field name="confirmPassword" component={this.renderSignUp} label="Confirm password" type="password" />
-            <button type="submit" className="btn btn-primary">Sign Up</button>
-            <div>
-            <Link to="/signin" className="btn">
-              Already a member{'?'} yet Log in
-            </Link>
-            </div>
-          </form>
-        </div>
+        <form onSubmit={handleSubmit(signUp.bind(null, signUpUser))}>
+          <Field name="email" component={renderSignUp} label="Email" type="email" />
+          <Field name="password" component={renderSignUp} label="Password" type="password" />
+          <Field name="confirmPassword" component={renderSignUp} label="Confirm password" type="password" />
+          <button type="submit" className="btn btn-primary">Sign Up</button>
+          <div>
+          <Link to="/signin" className="btn">
+            Already a member{'?'} yet Log in
+          </Link>
+          </div>
+        </form>
       </div>
-    )
-  }
+    </div>
+  )
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
   return {
     authError: state.auth.error
   };
