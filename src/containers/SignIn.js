@@ -48,7 +48,7 @@ const SignIn = ({ authError, handleSubmit, signInUser}) => {
             <Field name="password" component={renderField} className="" type="password" label="Password"/>
 
             <button action="submit" className="">Sign In</button>
-            <Link to='/forgot-password'>forgot password{'?'}</Link>
+            <Link to={PASSWORD_FORGET}>forgot password{'?'}</Link>
           </form>
         </div>
       </div>

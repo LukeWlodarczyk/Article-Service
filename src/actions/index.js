@@ -61,3 +61,13 @@ export const signUpUser = ({ email, password }) => (dispatch) => {
       console.log(error);
     });
 }
+
+export const resetPassword = email => (dispatch) => {
+  auth.doPasswordReset(email)
+    .then( () => {
+      console.log('success');
+    })
+    .catch(error => {
+      dispatch(authError(error));
+    });
+}
