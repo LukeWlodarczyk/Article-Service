@@ -3,6 +3,7 @@ import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import {Link} from 'react-router-dom';
 import { signUpUser } from "../actions/index.js";
+import { SIGN_IN } from '../constants/routes';
 
 function validate(values) {
   const errors = {};
@@ -58,7 +59,7 @@ const  SignUp = ({ authError, handleSubmit, signUpUser}) => {
           <Field name="confirmPassword" component={renderSignUp} label="Confirm password" type="password" />
           <button type="submit" className="btn btn-primary">Sign Up</button>
           <div>
-          <Link to="/signin" className="btn">
+          <Link to={SIGN_IN} className="btn">
             Already a member{'?'} yet Log in
           </Link>
           </div>

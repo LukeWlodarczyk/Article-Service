@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
+import { toastr } from 'react-redux-toastr'
 
 class Account extends Component {
   constructor(props) {
     super(props)
   }
 
-  render() {
-    console.log(this.props.authenticated.emailVerified);
+  componentDidMount() {
     const { emailVerified } = this.props.authenticated;
     if(!emailVerified) {
-      return <p>Please verify your email</p>
+      toastr.info('Please verify your email')
     }
+  }
+
+  render() {
     return <p>account</p>
   }
 }

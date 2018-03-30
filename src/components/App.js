@@ -3,6 +3,7 @@ import { ConnectedRouter } from "react-router-redux";
 import { Route, Redirect } from "react-router-dom";
 import { history } from "../store/store.js";
 import { connect } from "react-redux";
+import ReduxToastr from 'react-redux-toastr';
 import SignIn from '../containers/SignIn';
 import SignUp from '../containers/SignUp';
 import Home from '../containers/Home';
@@ -51,6 +52,15 @@ const App = ({ authenticated }) =>{
       <ConnectedRouter history={history}>
         <div>
           <Navigation authenticate={authenticated} />
+          <ReduxToastr
+            timeOut={6000}
+            newestOnTop={false}
+            preventDuplicates
+            position="top-right"
+            transitionIn="bounceInDown"
+            transitionOut="bounceOutUp"
+            progressBar
+          />
           <Route exact path={routes.HOME} component={Home} />
           <Route path={routes.OFFERTS} component={Offerts} />
           <PrivateRoute

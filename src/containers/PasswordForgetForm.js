@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { resetPassword } from '../actions/index';
-import { history } from '../store/store';
-import { SIGN_IN } from '../constants/routes'
 
 
 const validate = values => {
@@ -29,19 +27,20 @@ const renderField = ({ input, label, type, meta: { touched, error } }) => (
 
 const handleResetPassword = (resetPassword, { email }) => {
   resetPassword(email);
-  history.push(SIGN_IN);
 };
 
 const PasswordForgetForm = ({ authError, handleSubmit, resetPassword }) => {
   return (
-    <form onSubmit={handleSubmit(handleResetPassword.bind(null, resetPassword))}>
-      <Field name="email" component={renderField} label="Email" type="email" />
-      <button action="submit" className="">Reset My Password</button>
-    </form>
+    <div className="container">
+      {authError && <div className="alert alert-danger"> {authError}  </div>}
+      <form onSubmit={handleSubmit(handleResetPassword.bind(null, resetPassword))}>
+        <Field name="email" component={renderField} label="Email" type="email" />
+        <button action="submit" className="">Reset My Password</button>
+      </form>
+    </div>
 
   );
 };
-
 const mapStateToProps = (state) => {
   return {
     authError: state.auth.error
