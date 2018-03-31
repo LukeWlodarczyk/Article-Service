@@ -14,3 +14,15 @@ export const doPasswordReset = (email) =>
 
 export const doPasswordUpdate = (password) =>
   auth.currentUser.updatePassword(password);
+
+export const doEmailUpdate = (email) =>
+  auth.currentUser.updateEmail(email);
+
+export const doReauthenticate = (credential) =>
+  auth.currentUser.reauthenticateWithCredential(credential);
+
+export const doCredentials = (credentials) =>
+  auth.EmailAuthProvider.credential(email, password);
+
+export const doDeleteAccount = () =>
+  auth.currentUser.delete();

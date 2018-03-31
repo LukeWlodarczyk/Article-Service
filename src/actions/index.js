@@ -85,6 +85,24 @@ export const resetPassword = email => (dispatch) => {
 };
 
 
+export const secureSensitiveAction = (credentials, type, newData) => (dispatch) => {
+
+  const credential = auth.doCredentials(credentials.email, credentials.password);
+
+  auth.reauthenticateWithCredential(credential)
+    .then( () => {
+      console.log('User reauthenticated');
+      type === 'passwordUpdate' && auth.doPasswordUpdate(newData)
+      type === 'emailUpdate' && auth.doEmailUpdate(newData)
+      type === 'deleteAccount' && auth.doDeleteAccount()
+    })
+    .catch(error => {
+      dispatch(authError(error));
+      toastr.error(error.message)
+    });
+};
+
+
 // const toastrConfirmOptions = {
 //   onOk: () => console.log('OK: clicked'),
 //   onCancel: () => console.log('CANCEL: clicked')
