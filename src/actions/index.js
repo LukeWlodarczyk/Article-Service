@@ -83,3 +83,10 @@ export const resetPassword = email => (dispatch) => {
       toastr.error(error.message)
     });
 };
+
+
+// const toastrConfirmOptions = {
+//   onOk: () => console.log('OK: clicked'),
+//   onCancel: () => console.log('CANCEL: clicked')
+// };
+// toastr.confirm('Are you sure about that?', toastrConfirmOptions);

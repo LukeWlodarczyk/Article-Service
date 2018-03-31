@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
+import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
 import { resetPassword } from '../actions/index';
+import { renderTextField } from '../helpers/reduxFormField';
 
 
 const validate = values => {
@@ -15,27 +17,16 @@ const validate = values => {
   return errors;
 };
 
-const renderField = ({ input, label, type, meta: { touched, error } }) => (
-  <fieldset className={`form-group ${touched && error ? 'has-error' : ''}`}>
-    <label className="control-label">{label}</label>
-    <div>
-      <input {...input} placeholder={label} className="form-control" type={type} />
-      {touched && error && <div className="help-block">{error}</div>}
-    </div>
-  </fieldset>
-);
-
 const handleResetPassword = (resetPassword, { email }) => {
   resetPassword(email);
 };
 
-const PasswordForgetForm = ({ authError, handleSubmit, resetPassword }) => {
+const PasswordForgetForm = ({ handleSubmit, resetPassword }) => {
   return (
     <div className="container">
-      {authError && <div className="alert alert-danger"> {authError}  </div>}
       <form onSubmit={handleSubmit(handleResetPassword.bind(null, resetPassword))}>
-        <Field name="email" component={renderField} label="Email" type="email" />
-        <button action="submit" className="">Reset My Password</button>
+        <Field name="email" component={renderTextField} label="Email" type="email" />
+        <RaisedButton type="submit" label="reset password" className="button-submit" primary={true} />
       </form>
     </div>
 

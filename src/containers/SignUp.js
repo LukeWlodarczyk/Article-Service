@@ -1,9 +1,11 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
-import {Link} from 'react-router-dom';
+import RaisedButton from 'material-ui/RaisedButton';
+import { Link } from 'react-router-dom';
 import { signUpUser } from "../actions/index.js";
 import { SIGN_IN } from '../constants/routes';
+import { renderTextField } from '../helpers/reduxFormField';
 
 function validate(values) {
   const errors = {};
@@ -24,57 +26,32 @@ function validate(values) {
   return errors;
 }
 
-  const renderSignUp = field => {
-    const {input, label, type, meta: { touched, error } } = field;
-    const className = `form-group${touched && error ? "has-error" : ""}`;
-    return (
-      <fieldset className={className}>
-        <label className="control-label">{label}</label>
-        <div>
-          <input className="form-control" {...input} type={type} />
-        </div>
-        {touched && error && <div className="alert alert-danger">
-              {error}
-            </div>}
-      </fieldset>
-    );
-  };
-
-  const signUp = (signUpUser, values) => {
-    signUpUser(values);
-  };
+const signUp = (signUpUser, values) => {
+  signUpUser(values);
+};
 
 
-const  SignUp = ({ authError, handleSubmit, signUpUser}) => {
+const  SignUp = ({ handleSubmit, signUpUser }) => {
 
   return(
     <div className="container">
       <div className="">
         <h2 className="text-center">Sign Up</h2>
-        {authError && <div className="alert alert-danger"> {authError}  </div>}
-
         <form onSubmit={handleSubmit(signUp.bind(null, signUpUser))}>
-          <Field name="email" component={renderSignUp} label="Email" type="email" />
-          <Field name="password" component={renderSignUp} label="Password" type="password" />
-          <Field name="confirmPassword" component={renderSignUp} label="Confirm password" type="password" />
-          <button type="submit" className="btn btn-primary">Sign Up</button>
-          <div>
+          <Field name="email" component={renderTextField} label="Email" type="email" />
+          <Field name="password" component={renderTextField} label="Password" type="password" />
+          <Field name="confirmPassword" component={renderTextField} label="Confirm password" type="password" />
+          <RaisedButton type="submit" label="Sign Up" className="button-submit" primary={true} />
           <Link to={SIGN_IN} className="btn">
             Already a member{'?'} yet Log in
           </Link>
-          </div>
         </form>
       </div>
     </div>
   )
 }
 
-const mapStateToProps = (state) => {
-  return {
-    authError: state.auth.error
-  };
-}
-export default connect(mapStateToProps, { signUpUser })(
+export default connect(null, { signUpUser })(
   reduxForm({
     form: "signUp",
     validate: validate
