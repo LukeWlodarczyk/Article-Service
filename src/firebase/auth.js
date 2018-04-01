@@ -18,11 +18,11 @@ export const doPasswordUpdate = (password) =>
 export const doEmailUpdate = (email) =>
   auth.currentUser.updateEmail(email);
 
-export const doReauthenticate = (credential) =>
-  auth.currentUser.reauthenticateWithCredential(credential);
-
-export const doCredentials = (credentials) =>
-  auth.EmailAuthProvider.credential(email, password);
-
 export const doDeleteAccount = () =>
   auth.currentUser.delete();
+
+export const doReauthenticate = (credentials) =>
+  auth.currentUser.reauthenticateWithCredential(credentials);
+
+export const doCredentials = ({ email, password }) =>
+  auth.EmailAuthProvider.credential(email, password);

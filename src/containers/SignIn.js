@@ -33,7 +33,7 @@ const SignIn = ({ handleSubmit, signInUser }) => {
       <div className="container">
         <div className="">
           <h2 className="">Log In</h2>
-          <form onSubmit={handleSubmit((values) => signInUser(values))}>
+          <form onSubmit={handleSubmit(handleFormSubmit.bind(null, signInUser))}>
             <Field name="email" component={renderTextField} className="" type="text" label="Email"/>
             <Field name="password" component={renderTextField} className="" type="password" label="Password"/>
             <RaisedButton type="submit" label="Sign In" className="button-submit" primary={true} />

@@ -19,9 +19,9 @@ const Navigation = ({ authenticated }) => (
               <li className="">
                   <Link className="" to="/offerts">Offerts</Link>
               </li>
-              <li className="">
+              {authenticated && <li className="">
                   <Link className="" to="/add-offert">Add offert</Link>
-              </li>
+              </li>}
               <li className="">
                   <Link className="" to="/account">Account</Link>
               </li>

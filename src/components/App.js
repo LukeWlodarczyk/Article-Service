@@ -12,46 +12,15 @@ import Account from '../containers/Account';
 import AddOffert from '../containers/AddOffert';
 import Offerts from '../containers/Offerts';
 import PasswordForgetForm from '../containers/PasswordForgetForm';
-import * as routes from '../constants/routes'
-
-
-const PrivateRoute = ({ component: Component, authenticated, ...props }) => {
-  return (
-    <Route
-      {...props}
-      render={props =>
-        authenticated ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to={{ pathname: "/", state: { from: props.location } }} />
-        )
-      }
-    />
-  );
-};
-
-const SignInUpRoute = ({ component: Component, authenticated, ...props }) => {
-  return (
-    <Route
-      {...props}
-      render={props =>
-        !authenticated ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to={routes.HOME} />
-        )
-      }
-    />
-  );
-};
-
+import * as routes from '../constants/routes';
+import { PrivateRoute, SignInUpRoute } from './Routes';
 
 
 const App = ({ authenticated }) =>{
     return (
       <ConnectedRouter history={history}>
         <div>
-          <Navigation authenticate={authenticated} />
+          <Navigation authenticated={authenticated} />
           <ReduxToastr
             timeOut={6000}
             newestOnTop={false}
