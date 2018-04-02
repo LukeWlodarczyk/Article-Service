@@ -1,6 +1,7 @@
 import { firebase, auth } from '../firebase/index';
-import { push } from "react-router-redux";
-import { SIGN_IN, PASSWORD_FORGET } from '../constants/routes'
+import { reset } from 'redux-form';
+import { push, goBack } from "react-router-redux";
+import { SIGN_IN, ACCOUNT, HOME } from '../constants/routes'
 import { AUTH_USER, AUTH_ERROR, SIGN_OUT_USER } from '../constants/action-types';
 import { toastr } from 'react-redux-toastr'
 
@@ -54,7 +55,8 @@ export const signInUser = ({ email, password }) => (dispatch) =>{
         toastr.success('Welcome!')
       })
       .catch(error => {
-        toastr.error(error.message)
+        toastr.error(error.message);
+        dispatch(reset('signin'));
         dispatch(authError(error));
       });
 };
@@ -68,6 +70,7 @@ export const signUpUser = ({ email, password }) => (dispatch) => {
     })
     .catch(error => {
       dispatch(authError(error));
+      dispatch(reset('signup'));
       toastr.error(error.message)
     });
 };
@@ -76,35 +79,60 @@ export const resetPassword = email => (dispatch) => {
   auth.doPasswordReset(email)
     .then( () => {
       dispatch(push(SIGN_IN));
-      toastr.success('Check your email')
+      toastr.success('Check your email');
     })
     .catch(error => {
       dispatch(authError(error));
+      dispatch(reset('resetPassword'));
       toastr.error(error.message)
     });
 };
 
 
-export const secureSensitiveAction = (credentials, type, newData) => (dispatch) => {
+export const secureSensitiveAction = (password, type, newData) => (dispatch) => {
 
-  const credential = auth.doCredentials(credentials.email, credentials.password);
-
-  auth.reauthenticateWithCredential(credential)
+  const credential = auth.doCredentials({ email: firebase.auth.currentUser.email, password });
+  
+  auth.doReauthenticate(credential)
     .then( () => {
       console.log('User reauthenticated');
-      type === 'passwordUpdate' && auth.doPasswordUpdate(newData)
-      type === 'emailUpdate' && auth.doEmailUpdate(newData)
-      type === 'deleteAccount' && auth.doDeleteAccount()
+
+      type === 'passwordUpdate' &&
+        auth.doPasswordUpdate(newData)
+          .then( () => {
+            dispatch(goBack());
+            toastr.success('Password updated!');
+          })
+          .catch(error => {
+            dispatch(reset('passwordSettings'))
+            toastr.error(error.message);
+          })
+
+      type === 'emailUpdate' &&
+        auth.doEmailUpdate(newData)
+          .then( () => {
+            dispatch(goBack());
+            toastr.success('Email updated!');
+          })
+          .catch(error => {
+            dispatch(reset('emailSettings'))
+            toastr.error(error.message);
+          })
+
+      type === 'deleteAccount' &&
+        auth.doDeleteAccount()
+          .then( () => {
+            dispatch(push(HOME));
+            toastr.success('Account successfully deleted!');
+          })
+          .catch(error => {
+            toastr.error(error.message);
+          })
     })
     .catch(error => {
       dispatch(authError(error));
-      toastr.error(error.message)
+      dispatch(reset('passwordSettings'))
+      dispatch(reset('emailSettings'))
+      toastr.error('Wrong password!')
     });
 };
-
-
-// const toastrConfirmOptions = {
-//   onOk: () => console.log('OK: clicked'),
-//   onCancel: () => console.log('CANCEL: clicked')
-// };
-// toastr.confirm('Are you sure about that?', toastrConfirmOptions);

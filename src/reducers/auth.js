@@ -1,7 +1,9 @@
 import {AUTH_USER, SIGN_OUT_USER, AUTH_ERROR} from '../constants/action-types';
 
 const initialState={
-    authenticated: null,
+    authenticated: {
+      uid: 'guest'
+    },
     error: null
 };
 
@@ -17,7 +19,7 @@ export default (state=initialState, action) => {
       case SIGN_OUT_USER:
           return {
               ...state,
-              authenticated: null,
+              authenticated: { uid: 'guest' },
               error: null
           };
       case AUTH_ERROR:

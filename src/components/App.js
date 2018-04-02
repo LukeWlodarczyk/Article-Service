@@ -9,6 +9,7 @@ import SignUp from '../containers/SignUp';
 import Home from '../containers/Home';
 import Navigation from './Navigation';
 import Account from '../containers/Account';
+import AccountSettings from '../containers/AccountSettings';
 import AddOffert from '../containers/AddOffert';
 import Offerts from '../containers/Offerts';
 import PasswordForgetForm from '../containers/PasswordForgetForm';
@@ -17,6 +18,7 @@ import { PrivateRoute, SignInUpRoute } from './Routes';
 
 
 const App = ({ authenticated }) =>{
+  console.log(authenticated);
     return (
       <ConnectedRouter history={history}>
         <div>
@@ -39,8 +41,13 @@ const App = ({ authenticated }) =>{
           />
           <PrivateRoute
             authenticated={authenticated}
-            path={routes.ACCOUNT}
+            exact path={routes.ACCOUNT}
             component={Account}
+          />
+          <PrivateRoute
+            authenticated={authenticated}
+            exact path={routes.ACCOUNT_SETTINGS}
+            component={AccountSettings}
           />
           <SignInUpRoute
             authenticated={authenticated}

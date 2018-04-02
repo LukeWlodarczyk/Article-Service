@@ -8,10 +8,10 @@ export const PrivateRoute = ({ component: Component, authenticated, ...props }) 
     <Route
       {...props}
       render={props =>
-        authenticated ? (
+        authenticated.uid !== 'guest' ? (
           <Component {...props} />
         ) : (
-          <Redirect to={{ pathname: "/", state: { from: props.location } }} />
+          <Redirect to={{ pathname: "/signin", state: { from: props.location } }} />
         )
       }
     />
@@ -23,7 +23,7 @@ export const SignInUpRoute = ({ component: Component, authenticated, ...props })
     <Route
       {...props}
       render={props =>
-        !authenticated ? (
+        authenticated.uid === 'guest' ? (
           <Component {...props} />
         ) : (
           <Redirect to={HOME} />

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import SignOutButton from './SignOutButton'
-
+import SignOutButton from './SignOutButton';
 
 const Navigation = ({ authenticated }) => (
   <nav className="">
@@ -10,20 +9,23 @@ const Navigation = ({ authenticated }) => (
               <Link className="" to="/">home</Link>
           </div>
           <ul className="">
-              <li className="">
-                  <Link className="" to="/signup">Sign up</Link>
-              </li>
-              <li className="">
-                  <Link className="" to="/signin">Sign in</Link>
-              </li>
+              {authenticated.uid === 'guest' &&
+                <React.Fragment>
+                  <li className="">
+                      <Link className="" to="/signup">Sign up</Link>
+                  </li>
+                  <li className="">
+                      <Link className="" to="/signin">Sign in</Link>
+                  </li>
+                </React.Fragment>}
               <li className="">
                   <Link className="" to="/offerts">Offerts</Link>
               </li>
-              {authenticated && <li className="">
-                  <Link className="" to="/add-offert">Add offert</Link>
-              </li>}
               <li className="">
-                  <Link className="" to="/account">Account</Link>
+                  <Link className="" to="/add-offert">Add offert</Link>
+              </li>
+              <li className="">
+                  <Link className="" to={"/users/"+authenticated.uid}>Account</Link>
               </li>
               <SignOutButton />
           </ul>

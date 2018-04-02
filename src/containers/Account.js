@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { toastr } from 'react-redux-toastr'
+import { toastr } from 'react-redux-toastr';
+import { Link } from 'react-router-dom';
 
 class Account extends Component {
   constructor(props) {
@@ -12,10 +13,17 @@ class Account extends Component {
     if(!emailVerified) {
       toastr.info('Please verify your email')
     }
+    let id = this.props.match.params.id
+    console.log(id);
   }
 
   render() {
-    return <p>account</p>
+    return (
+      <div>
+        <p>Account</p>
+        <Link className="" to={"/users/"+this.props.match.params.id+"/settings"}>Settings</Link>
+      </div>
+    )
   }
 }
 

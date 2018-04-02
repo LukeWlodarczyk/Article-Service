@@ -1,4 +1,7 @@
 import { auth } from './firebase';
+import { firebase } from './firebase';
+
+export const currentUser = () => firebase.auth.currentUser;
 
 export const doCreateUserWithEmailAndPassword = (email, password) =>
   auth.createUserWithEmailAndPassword(email, password);
@@ -21,8 +24,8 @@ export const doEmailUpdate = (email) =>
 export const doDeleteAccount = () =>
   auth.currentUser.delete();
 
-export const doReauthenticate = (credentials) =>
-  auth.currentUser.reauthenticateWithCredential(credentials);
+export const doReauthenticate = (credential) =>
+  auth.currentUser.reauthenticateWithCredential(credential);
 
 export const doCredentials = ({ email, password }) =>
-  auth.EmailAuthProvider.credential(email, password);
+  firebase.auth.EmailAuthProvider.credential(email, password);

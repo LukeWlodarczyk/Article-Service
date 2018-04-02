@@ -53,7 +53,7 @@ const  SignUp = ({ handleSubmit, signUpUser }) => {
 
 export default connect(null, { signUpUser })(
   reduxForm({
-    form: "signUp",
+    form: "signup",
     validate: validate
   })(SignUp)
 );

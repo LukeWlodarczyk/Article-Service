@@ -46,6 +46,6 @@ const SignIn = ({ handleSubmit, signInUser }) => {
 
 
 export default connect(null, { signInUser }) (reduxForm({
-  form: 'login',
+  form: 'signin',
   validate
 })(SignIn));
