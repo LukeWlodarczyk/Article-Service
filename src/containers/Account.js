@@ -21,7 +21,7 @@ class Account extends Component {
     return (
       <div>
         <p>Account</p>
-        <Link className="" to={"/users/"+this.props.match.params.id+"/settings"}>Settings</Link>
+        <Link className="" to={"/profile/settings"}>Settings</Link>
       </div>
     )
   }

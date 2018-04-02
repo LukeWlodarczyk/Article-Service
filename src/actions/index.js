@@ -6,8 +6,6 @@ import { AUTH_USER, AUTH_ERROR, SIGN_OUT_USER } from '../constants/action-types'
 import { toastr } from 'react-redux-toastr'
 
 
-
-
 export const verifyAuth = () => dispatch => {
     firebase.auth.onAuthStateChanged( user => {
       if (user) {
@@ -92,7 +90,7 @@ export const resetPassword = email => (dispatch) => {
 export const secureSensitiveAction = (password, type, newData) => (dispatch) => {
 
   const credential = auth.doCredentials({ email: firebase.auth.currentUser.email, password });
-  
+
   auth.doReauthenticate(credential)
     .then( () => {
       console.log('User reauthenticated');

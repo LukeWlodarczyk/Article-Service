@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ConnectedRouter } from "react-router-redux";
-import { Route, Redirect } from "react-router-dom";
+import { Route } from "react-router-dom";
 import { history } from "../store/store.js";
 import { connect } from "react-redux";
 import ReduxToastr from 'react-redux-toastr';
