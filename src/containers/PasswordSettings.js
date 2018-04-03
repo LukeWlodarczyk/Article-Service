@@ -33,7 +33,6 @@ const validate = values => {
 
 class PasswordSettings extends Component {
 
-
   handleChangePassword = (values) => {
     this.props.secureSensitiveAction(values.currentPassword, 'passwordUpdate', values.newPassword);
   };

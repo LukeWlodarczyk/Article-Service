@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { signOutUser } from '../actions/index';
+import { signOutUser, pushUrl } from '../actions/index';
 import { connect } from 'react-redux';
 import Button from 'material-ui/Button';
 import Menu, { MenuItem } from 'material-ui/Menu';
@@ -11,7 +11,7 @@ import AccountBox from 'material-ui-icons/AccountBox';
 import Settings from 'material-ui-icons/Settings';
 import Power from 'material-ui-icons/PowerSettingsNew';
 
-class AccountMenu extends React.Component {
+class AccountMenu extends Component {
   state = {
     anchorEl: null,
   };
@@ -23,6 +23,11 @@ class AccountMenu extends React.Component {
   handleClose = () => {
     this.setState({ anchorEl: null });
   };
+
+  handleLink = (url) => () => {
+    this.props.pushUrl(url);
+    this.handleClose()
+  }
 
   render() {
     const { anchorEl } = this.state;
@@ -43,29 +48,23 @@ class AccountMenu extends React.Component {
           open={Boolean(anchorEl)}
           onClose={this.handleClose}
         >
-          <MenuItem onClick={this.handleClose} >
+          <MenuItem onClick={this.handleLink("/profile")} >
             <ListItemIcon>
               <AccountBox />
             </ListItemIcon>
-            <ListItemText>
-              <Link to="/profile">Profile</Link>
-            </ListItemText >
+            <ListItemText inset primary="Profile" />
           </MenuItem>
-          <MenuItem onClick={this.handleClose}>
+          <MenuItem onClick={this.handleLink("/profile/settings")}>
             <ListItemIcon>
               <Settings />
             </ListItemIcon>
-            <ListItemText>
-              <Link to="/profile/settings">Settings</Link>
-            </ListItemText >
+            <ListItemText inset primary="Settings" />
           </MenuItem>
           <MenuItem onClick={this.props.signOutUser}>
             <ListItemIcon>
               <Power />
             </ListItemIcon>
-            <ListItemText>
-              Sign out
-            </ListItemText >
+            <ListItemText inset primary="Sign out" />
           </MenuItem>
         </Menu>
       </div>
@@ -73,4 +72,4 @@ class AccountMenu extends React.Component {
   }
 }
 
-export default connect(null, { signOutUser })(AccountMenu);
+export default connect(null, { signOutUser, pushUrl })(AccountMenu);

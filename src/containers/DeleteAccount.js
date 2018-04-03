@@ -1,71 +1,3 @@
-// import React, { Component } from 'react';
-// import Dialog from 'material-ui/Dialog';
-// import Button from 'material-ui/Button';
-// import { renderTextField } from '../helpers/reduxFormField';
-// import { Field, reduxForm } from 'redux-form';
-//
-// const validate = values => {
-//   const errors = {};
-//
-//   if (!values.password) {
-//     errors.password = "Please enter a password.";
-//   }
-//
-//   return errors;
-// };
-//
-//
-// class DeleteAccount extends Component {
-//   constructor(props) {
-//     super(props)
-//     this.state = {
-//       open: false,
-//     };
-//   }
-//
-//   handleOpen = () => {
-//     this.setState({ open: true });
-//   };
-//
-//   handleClose = () => {
-//     this.setState({ open: false });
-//   };
-//
-//   deleteAccount = (values) => {
-//     this.props.secureSensitiveAction(values.password, 'deleteAccount');
-//   }
-//
-//   render() {
-//
-//     return (
-//       <div>
-//         <Button variant="raised" onClick={this.handleOpen}>Delete Account</Button>
-//         <Dialog
-//           title="Type in your password"
-//           modal={false}
-//           open={this.state.open}
-//           onRequestClose={this.handleClose}
-//         >
-//           <form onSubmit={this.props.handleSubmit(this.deleteAccount)}>
-//             <Field name="password" component={renderTextField} className="" type="password" label="Password"/>
-//             <Button
-//               type='submit'
-//               keyboardFocused={true}
-//               onClick={this.handleClose}
-//               color="primary"
-//             >
-//               Delete
-//             </Button>
-//
-//           </form>
-//         </Dialog>
-//       </div>
-//     );
-//   }
-// }
-
-
-
 import React from 'react';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
@@ -93,7 +25,6 @@ class DeleteAccount extends React.Component {
     super(props);
     this.state = {
       open: false,
-      password: '',
     };
   }
 
@@ -104,7 +35,6 @@ class DeleteAccount extends React.Component {
   handleClose = () => {
     this.setState({
       open: false,
-      password: '',
     });
     this.props.reset()
   };
@@ -123,7 +53,9 @@ class DeleteAccount extends React.Component {
   render() {
     return (
       <div>
-        <Button variant="raised" color="primary" onClick={this.handleClickOpen}>Delete Account</Button>
+        <Button variant="raised" color="primary" onClick={this.handleClickOpen}>
+          Delete Account
+        </Button>
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
@@ -152,7 +84,12 @@ class DeleteAccount extends React.Component {
             <Button onClick={this.handleClose} color="primary">
               Cancel
             </Button>
-            <Button variant="raised" disabled={this.state.password === ''} onClick={this.deleteAccount} color="primary">
+            <Button
+              variant="raised"
+              disabled={this.state.password === ''}
+              onClick={this.deleteAccount}
+              color="primary"
+            >
               Delete Account
             </Button>
           </DialogActions>

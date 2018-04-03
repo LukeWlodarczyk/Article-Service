@@ -5,6 +5,9 @@ import { SIGN_IN, ACCOUNT, HOME } from '../constants/routes'
 import { AUTH_USER, AUTH_ERROR, SIGN_OUT_USER } from '../constants/action-types';
 import { toastr } from 'react-redux-toastr'
 
+export const pushUrl = (url) => dispatch => {
+    dispatch(push(url))
+};
 
 export const verifyAuth = () => dispatch => {
     firebase.auth.onAuthStateChanged( user => {
@@ -38,10 +41,10 @@ export const authError = (error) => {
 
 export const signOutUser = () => dispatch => {
   auth.doSignOut()
-        .then(() => {
-          dispatch(deauthUser());
-          toastr.success('You have been logged out.')
-        });
+    .then(() => {
+      dispatch(deauthUser());
+      toastr.success('You have been logged out.')
+    });
 };
 
 
