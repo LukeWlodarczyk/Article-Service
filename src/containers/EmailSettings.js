@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import Button from 'material-ui/Button';
 import { renderTextField } from '../helpers/reduxFormField';
+import { withStyles } from 'material-ui/styles';
+import { compose } from '../helpers/compose';
 
 const validate = values => {
   const errors = {};
@@ -19,6 +21,19 @@ const validate = values => {
   return errors;
 };
 
+const styles = theme => ({
+    button: {
+      marginTop: '2em',
+      width: '80%',
+      maxWidth: '600px',
+    },
+    field: {
+      maxWidth: '600px',
+      width: '80%',
+    }
+
+});
+
 
 class EmailSettings extends Component {
 
@@ -27,15 +42,15 @@ class EmailSettings extends Component {
   };
 
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, classes } = this.props;
     return(
       <div className="container">
         <div className="">
-          <h2 className="">Change Email</h2>
-          <form onSubmit={handleSubmit(this.handleChangeEmail)}>
-            <Field name="newEmail" component={renderTextField} className="" type="email" label="New email"/>
-            <Field name="password" component={renderTextField} className="" type="password" label="password"/>
-            <Button variant="raised" type="submit" color="primary" className="button-submit" >
+          <h2 className="form-heading">Change Email</h2>
+          <form onSubmit={handleSubmit(this.handleChangeEmail)} className='form form-changeEmail'>
+            <Field name="newEmail" component={renderTextField} className={classes.field} type="email" label="New email"/>
+            <Field name="password" component={renderTextField} className={classes.field} type="password" label="Password"/>
+            <Button variant="raised" type="submit" color="primary" className={classes.button} >
               Change email
             </Button>
           </form>
@@ -46,7 +61,10 @@ class EmailSettings extends Component {
 }
 
 
-export default reduxForm({
-  form: 'emailSettings',
-  validate
-})(EmailSettings);
+export default compose(
+  withStyles(styles, { withTheme: true }),
+  reduxForm({
+    form: 'emailSettings',
+    validate
+  })
+)(EmailSettings);

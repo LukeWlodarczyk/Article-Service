@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import SwipeableViews from 'react-swipeable-views';
@@ -9,7 +9,8 @@ import { connect } from 'react-redux';
 import { secureSensitiveAction } from '../actions/index';
 import EmailSettings from './EmailSettings';
 import PasswordSettings from './PasswordSettings';
-import DeleteAccount from './DeleteAccount'
+import DeleteAccount from './DeleteAccount';
+import { compose } from '../helpers/compose';
 
 const TabContainer = ({ children, dir }) => (
     <Typography component="div" dir={dir} style={{ padding: 8 * 3 }}>
@@ -29,7 +30,7 @@ const styles = theme => ({
   },
 });
 
-class AccountSettings extends React.Component {
+class AccountSettings extends Component {
   state = {
     value: 0,
   };
@@ -81,8 +82,6 @@ AccountSettings.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
 };
-
-const compose = (...fns) => fns.reduce( (f, g) => (...args) => f(g(...args)))
 
 export default compose(
   withStyles(styles, { withTheme: true }),

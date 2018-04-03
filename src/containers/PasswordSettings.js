@@ -3,6 +3,9 @@ import { Field, reduxForm } from 'redux-form';
 import Button from 'material-ui/Button';
 import { connect } from 'react-redux';
 import { renderTextField } from '../helpers/reduxFormField';
+import { withStyles } from 'material-ui/styles';
+import { compose } from '../helpers/compose';
+
 
 const validate = values => {
   const errors = {};
@@ -30,6 +33,19 @@ const validate = values => {
   return errors;
 };
 
+const styles = theme => ({
+    button: {
+      marginTop: '2em',
+      width: '80%',
+      maxWidth: '600px',
+    },
+    field: {
+      maxWidth: '600px',
+      width: '80%',
+    }
+
+});
+
 
 class PasswordSettings extends Component {
 
@@ -38,16 +54,16 @@ class PasswordSettings extends Component {
   };
 
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, classes } = this.props;
     return(
       <div className="container">
         <div className="">
-          <h2 className="">Change password</h2>
-          <form onSubmit={handleSubmit(this.handleChangePassword)}>
-            <Field name="newPassword" component={renderTextField} className="" type="password" label="New password"/>
-            <Field name="confirmNewPassword" component={renderTextField} className="" type="password" label="Confirm new password"/>
-            <Field name="currentPassword" component={renderTextField} className="" type="password" label="Current password"/>
-            <Button variant="raised" type="submit" color="primary" className="button-submit" >
+          <h2 className="form-heading">Change password</h2>
+          <form className="form form-changePassword" onSubmit={handleSubmit(this.handleChangePassword)}>
+            <Field name="newPassword" component={renderTextField} className={classes.field} type="password" label="New password"/>
+            <Field name="confirmNewPassword" component={renderTextField} className={classes.field} type="password" label="Confirm new password"/>
+            <Field name="currentPassword" component={renderTextField} className={classes.field} type="password" label="Current password"/>
+            <Button variant="raised" type="submit" color="primary" className={classes.button} >
               Change password
             </Button>
           </form>
@@ -57,8 +73,10 @@ class PasswordSettings extends Component {
   }
 }
 
-
-export default reduxForm({
-  form: 'passwordSettings',
-  validate
-})(PasswordSettings);
+export default compose(
+  withStyles(styles, { withTheme: true }),
+  reduxForm({
+    form: 'passwordSettings',
+    validate
+  })
+)(PasswordSettings)
