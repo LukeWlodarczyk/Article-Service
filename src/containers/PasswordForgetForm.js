@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import { connect } from 'react-redux';
 import { resetPassword } from '../actions/index';
 import { renderTextField } from '../helpers/reduxFormField';
@@ -26,7 +26,9 @@ const PasswordForgetForm = ({ handleSubmit, resetPassword }) => {
     <div className="container">
       <form onSubmit={handleSubmit(handleResetPassword.bind(null, resetPassword))}>
         <Field name="email" component={renderTextField} label="Email" type="email" />
-        <RaisedButton type="submit" label="reset password" className="button-submit" primary={true} />
+        <Button variant="raised" type="submit" color="primary" className="button-submit" >
+          Reset password
+        </Button>
       </form>
     </div>
 

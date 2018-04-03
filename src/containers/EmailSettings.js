@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import { renderTextField } from '../helpers/reduxFormField';
 
 const validate = values => {
@@ -35,7 +35,9 @@ class EmailSettings extends Component {
           <form onSubmit={handleSubmit(this.handleChangeEmail)}>
             <Field name="newEmail" component={renderTextField} className="" type="email" label="New email"/>
             <Field name="password" component={renderTextField} className="" type="password" label="password"/>
-            <RaisedButton type="submit" label="Change email" className="button-submit" primary={true} />
+            <Button variant="raised" type="submit" color="primary" className="button-submit" >
+              Change email
+            </Button>
           </form>
         </div>
       </div>

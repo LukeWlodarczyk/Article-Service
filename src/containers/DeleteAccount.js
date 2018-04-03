@@ -1,10 +1,82 @@
-import React, { Component } from 'react';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import DatePicker from 'material-ui/DatePicker';
-import { renderTextField } from '../helpers/reduxFormField';
+// import React, { Component } from 'react';
+// import Dialog from 'material-ui/Dialog';
+// import Button from 'material-ui/Button';
+// import { renderTextField } from '../helpers/reduxFormField';
+// import { Field, reduxForm } from 'redux-form';
+//
+// const validate = values => {
+//   const errors = {};
+//
+//   if (!values.password) {
+//     errors.password = "Please enter a password.";
+//   }
+//
+//   return errors;
+// };
+//
+//
+// class DeleteAccount extends Component {
+//   constructor(props) {
+//     super(props)
+//     this.state = {
+//       open: false,
+//     };
+//   }
+//
+//   handleOpen = () => {
+//     this.setState({ open: true });
+//   };
+//
+//   handleClose = () => {
+//     this.setState({ open: false });
+//   };
+//
+//   deleteAccount = (values) => {
+//     this.props.secureSensitiveAction(values.password, 'deleteAccount');
+//   }
+//
+//   render() {
+//
+//     return (
+//       <div>
+//         <Button variant="raised" onClick={this.handleOpen}>Delete Account</Button>
+//         <Dialog
+//           title="Type in your password"
+//           modal={false}
+//           open={this.state.open}
+//           onRequestClose={this.handleClose}
+//         >
+//           <form onSubmit={this.props.handleSubmit(this.deleteAccount)}>
+//             <Field name="password" component={renderTextField} className="" type="password" label="Password"/>
+//             <Button
+//               type='submit'
+//               keyboardFocused={true}
+//               onClick={this.handleClose}
+//               color="primary"
+//             >
+//               Delete
+//             </Button>
+//
+//           </form>
+//         </Dialog>
+//       </div>
+//     );
+//   }
+// }
+
+
+
+import React from 'react';
+import Button from 'material-ui/Button';
+import TextField from 'material-ui/TextField';
 import { Field, reduxForm } from 'redux-form';
+import { renderTextField } from '../helpers/reduxFormField';
+import Dialog, {
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from 'material-ui/Dialog';
 
 const validate = values => {
   const errors = {};
@@ -16,48 +88,74 @@ const validate = values => {
   return errors;
 };
 
-
-class DeleteAccount extends Component {
+class DeleteAccount extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       open: false,
+      password: '',
     };
   }
 
-  handleOpen = () => {
+  handleClickOpen = () => {
     this.setState({ open: true });
   };
 
   handleClose = () => {
-    this.setState({ open: false });
+    this.setState({
+      open: false,
+      password: '',
+    });
+    this.props.reset()
   };
 
+  handleChange = (event) => {
+    this.setState({
+      password: event.target.value,
+    });
+  };
+
+
   deleteAccount = (values) => {
-    this.props.secureSensitiveAction(values.password, 'deleteAccount');
+    this.props.secureSensitiveAction(this.state.password, 'deleteAccount');
   }
 
   render() {
-
     return (
       <div>
-        <RaisedButton label="Delete Account" onClick={this.handleOpen} />
+        <Button variant="raised" color="primary" onClick={this.handleClickOpen}>Delete Account</Button>
         <Dialog
-          title="Type in your password"
-          modal={false}
           open={this.state.open}
-          onRequestClose={this.handleClose}
+          onClose={this.handleClose}
+          aria-labelledby="form-dialog-title"
         >
-          <form onSubmit={this.props.handleSubmit(this.deleteAccount)}>
-            <Field name="password" component={renderTextField} className="" type="password" label="Password"/>
-            <FlatButton
-              type='submit'
-              label="Delete"
-              primary={true}
-              keyboardFocused={true}
-              onClick={this.handleClose}
-            />,
-          </form>
+          <DialogTitle id="form-dialog-title">Delete Account</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              This operation is permanent. Type in your password if you really want to delete your account.
+            </DialogContentText>
+            <form onSubmit={this.props.handleSubmit(this.deleteAccount)}>
+              <Field
+                name="password"
+                component={renderTextField}
+                className=""
+                type="password"
+                label="Password"
+                value={this.state.password}
+                onChange={this.handleChange}
+                fullWidth
+                margin="dense"
+              />
+            </form>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button variant="raised" disabled={this.state.password === ''} onClick={this.deleteAccount} color="primary">
+              Delete Account
+            </Button>
+          </DialogActions>
         </Dialog>
       </div>
     );

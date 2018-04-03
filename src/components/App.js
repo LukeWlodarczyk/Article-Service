@@ -16,6 +16,7 @@ import PasswordForgetForm from '../containers/PasswordForgetForm';
 import * as routes from '../constants/routes';
 import { PrivateRoute, SignInUpRoute } from './Routes';
 
+import withRoot from './withRoot';
 
 const App = ({ authenticated }) =>{
   console.log(authenticated);
@@ -76,4 +77,4 @@ const mapStateToProps = (state) => {
   }
 }
  
-export default connect(mapStateToProps)(App)
+export default connect(mapStateToProps)(withRoot((App)))

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import { connect } from 'react-redux';
 import { renderTextField } from '../helpers/reduxFormField';
 
@@ -48,7 +48,9 @@ class PasswordSettings extends Component {
             <Field name="newPassword" component={renderTextField} className="" type="password" label="New password"/>
             <Field name="confirmNewPassword" component={renderTextField} className="" type="password" label="Confirm new password"/>
             <Field name="currentPassword" component={renderTextField} className="" type="password" label="Current password"/>
-            <RaisedButton type="submit" label="Change password" className="button-submit" primary={true} />
+            <Button variant="raised" type="submit" color="primary" className="button-submit" >
+              Change password
+            </Button>
           </form>
         </div>
       </div>

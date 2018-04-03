@@ -8,10 +8,10 @@ export const renderTextField = ({
   ...custom
 }) => (
   <TextField
-    hintText={label}
-    floatingLabelText={label}
-    errorText={touched && error}
-    errorStyle={{float: "left"}}
+    error={touched && error}
+    helperText={touched && error}
+    label={label}
+    placeholder={label.toLowerCase()}
     {...input}
     {...custom}
   />

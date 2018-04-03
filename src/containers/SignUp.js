@@ -1,7 +1,7 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import { Link } from 'react-router-dom';
 import { signUpUser } from "../actions/index.js";
 import { SIGN_IN } from '../constants/routes';
@@ -41,7 +41,9 @@ const  SignUp = ({ handleSubmit, signUpUser }) => {
           <Field name="email" component={renderTextField} label="Email" type="email" />
           <Field name="password" component={renderTextField} label="Password" type="password" />
           <Field name="confirmPassword" component={renderTextField} label="Confirm password" type="password" />
-          <RaisedButton type="submit" label="Sign Up" className="button-submit" primary={true} />
+          <Button variant="raised" type="submit" color="primary" className="button-submit" >
+            Sign up
+          </Button>
           <Link to={SIGN_IN} className="btn">
             Already a member{'?'} yet Log in
           </Link>

@@ -2,19 +2,15 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { toastr } from 'react-redux-toastr';
 import { Link } from 'react-router-dom';
+import { ACCOUNT_SETTINGS } from '../constants/routes'
 
 class Account extends Component {
-  constructor(props) {
-    super(props)
-  }
 
   componentDidMount() {
     const { emailVerified } = this.props.authenticated;
     if(!emailVerified) {
       toastr.info('Please verify your email')
     }
-    let id = this.props.match.params.id
-    console.log(id);
   }
 
   render() {

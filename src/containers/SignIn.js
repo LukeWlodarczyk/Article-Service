@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import { connect } from 'react-redux';
 import { signInUser } from '../actions/index';
 import { Link } from 'react-router-dom';
@@ -36,7 +36,9 @@ const SignIn = ({ handleSubmit, signInUser }) => {
           <form onSubmit={handleSubmit(handleFormSubmit.bind(null, signInUser))}>
             <Field name="email" component={renderTextField} className="" type="text" label="Email"/>
             <Field name="password" component={renderTextField} className="" type="password" label="Password"/>
-            <RaisedButton type="submit" label="Sign In" className="button-submit" primary={true} />
+            <Button variant="raised" type="submit" color="primary"  className="button-submit">
+              Sign In
+            </Button>
             <Link to={PASSWORD_FORGET}>forgot password{'?'}</Link>
           </form>
         </div>
