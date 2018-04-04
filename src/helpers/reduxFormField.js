@@ -8,8 +8,8 @@ export const renderTextField = ({
   ...custom
 }) => (
   <TextField
-    error={touched}
-    helperText={touched && error}
+    error={touched && !!error}
+    helperText={touched ? error : ' '}
     label={label}
     placeholder={label.toLowerCase()}
     {...input}

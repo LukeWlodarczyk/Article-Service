@@ -24,7 +24,7 @@ class AccountMenu extends Component {
     this.setState({ anchorEl: null });
   };
 
-  handleLink = (url) => () => {
+  handleLink = url => () => {
     this.props.pushUrl(url);
     this.handleClose()
   }

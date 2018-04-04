@@ -4,9 +4,10 @@ import Button from 'material-ui/Button';
 import { connect } from 'react-redux';
 import { resetPassword } from '../actions/index';
 import { renderTextField } from '../helpers/reduxFormField';
+import { compose } from '../helpers/compose';
 
 
-const validate = values => {
+const validate = (values) => {
   const errors = {};
 
   if (!values.email) {
@@ -17,30 +18,32 @@ const validate = values => {
   return errors;
 };
 
-const handleResetPassword = (resetPassword, { email }) => {
-  resetPassword(email);
+
+class PasswordForgetForm extends Component {
+
+  handleResetPassword = ({ email }) => {
+    this.props.resetPassword(email);
+  };
+
+  render() {
+    const { handleSubmit } = this.props;
+    return (
+      <div className="container">
+        <form onSubmit={handleSubmit(this.handleResetPassword)}>
+          <Field name="email" component={renderTextField} label="Email" type="email" />
+          <Button variant="raised" type="submit" color="primary" className="button-submit" >
+            Reset password
+          </Button>
+        </form>
+      </div>
+    );
+  };
 };
 
-const PasswordForgetForm = ({ handleSubmit, resetPassword }) => {
-  return (
-    <div className="container">
-      <form onSubmit={handleSubmit(handleResetPassword.bind(null, resetPassword))}>
-        <Field name="email" component={renderTextField} label="Email" type="email" />
-        <Button variant="raised" type="submit" color="primary" className="button-submit" >
-          Reset password
-        </Button>
-      </form>
-    </div>
-
-  );
-};
-const mapStateToProps = (state) => {
-  return {
-    authError: state.auth.error
-  }
-}
-
-export default connect(mapStateToProps, { resetPassword }) (reduxForm({
-  form: 'resetPassword',
-  validate
-})(PasswordForgetForm));
+export default compose(
+  connect(null, { resetPassword }),
+  reduxForm({
+    form: 'resetPassword',
+    validate
+  })
+)(PasswordForgetForm);

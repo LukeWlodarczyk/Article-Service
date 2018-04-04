@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import Button from 'material-ui/Button';
 import { connect } from 'react-redux';
@@ -6,8 +6,9 @@ import { signInUser } from '../actions/index';
 import { Link } from 'react-router-dom';
 import { PASSWORD_FORGET } from '../constants/routes';
 import { renderTextField } from '../helpers/reduxFormField';
+import { compose } from '../helpers/compose';
 
-const validate = values => {
+const validate = (values) => {
   const errors = {};
 
   if (!values.email) {
@@ -23,17 +24,20 @@ const validate = values => {
   return errors;
 };
 
-const handleFormSubmit = (signInUser, values) => {
-  signInUser(values);
-};
 
+class SignIn extends Component {
 
-const SignIn = ({ handleSubmit, signInUser }) => {
+  signIn = (values) => {
+    this.props.signInUser(values);
+  };
+
+  render() {
+    const { handleSubmit } = this.props;
     return(
       <div className="container">
         <div className="">
           <h2 className="">Log In</h2>
-          <form onSubmit={handleSubmit(handleFormSubmit.bind(null, signInUser))}>
+          <form onSubmit={handleSubmit(this.signIn)}>
             <Field name="email" component={renderTextField} className="" type="text" label="Email"/>
             <Field name="password" component={renderTextField} className="" type="password" label="Password"/>
             <Button variant="raised" type="submit" color="primary"  className="button-submit">
@@ -45,9 +49,12 @@ const SignIn = ({ handleSubmit, signInUser }) => {
       </div>
     );
   }
+}
 
-
-export default connect(null, { signInUser }) (reduxForm({
-  form: 'signin',
-  validate
-})(SignIn));
+export default compose(
+  connect(null, { signInUser }),
+  reduxForm({
+    form: 'signin',
+    validate
+  })
+)(SignIn);

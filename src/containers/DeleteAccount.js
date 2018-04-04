@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import { Field, reduxForm } from 'redux-form';
@@ -20,7 +20,7 @@ const validate = values => {
   return errors;
 };
 
-class DeleteAccount extends React.Component {
+class DeleteAccount extends Component {
   constructor(props) {
     super(props);
     this.state = {

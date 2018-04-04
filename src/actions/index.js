@@ -1,6 +1,6 @@
 import { firebase, auth } from '../firebase/index';
 import { reset } from 'redux-form';
-import { push, goBack } from "react-router-redux";
+import { push } from "react-router-redux";
 import { SIGN_IN, ACCOUNT, HOME } from '../constants/routes'
 import { AUTH_USER, AUTH_ERROR, SIGN_OUT_USER } from '../constants/action-types';
 import { toastr } from 'react-redux-toastr'
@@ -101,7 +101,7 @@ export const secureSensitiveAction = (password, type, newData) => (dispatch) => 
       type === 'passwordUpdate' &&
         auth.doPasswordUpdate(newData)
           .then( () => {
-            dispatch(goBack());
+            dispatch(push(ACCOUNT));
             toastr.success('Password updated!');
           })
           .catch(error => {
@@ -112,7 +112,7 @@ export const secureSensitiveAction = (password, type, newData) => (dispatch) => 
       type === 'emailUpdate' &&
         auth.doEmailUpdate(newData)
           .then( () => {
-            dispatch(goBack());
+            dispatch(push(ACCOUNT));
             toastr.success('Email updated!');
           })
           .catch(error => {

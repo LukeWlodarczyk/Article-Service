@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import Button from 'material-ui/Button';
@@ -6,8 +6,9 @@ import { Link } from 'react-router-dom';
 import { signUpUser } from "../actions/index.js";
 import { SIGN_IN } from '../constants/routes';
 import { renderTextField } from '../helpers/reduxFormField';
+import { compose } from '../helpers/compose';
 
-function validate(values) {
+const validate = (values) => {
   const errors = {};
   if (!values.email) {
     errors.email = "Please enter an email.";
@@ -26,36 +27,43 @@ function validate(values) {
   return errors;
 }
 
-const signUp = (signUpUser, values) => {
-  signUpUser(values);
-};
+
+class SignUp extends Component {
 
 
-const  SignUp = ({ handleSubmit, signUpUser }) => {
+  signUp = (values) => {
+    this.props.signUpUser(values);
+  };
 
-  return(
-    <div className="container">
-      <div className="">
-        <h2 className="text-center">Sign Up</h2>
-        <form onSubmit={handleSubmit(signUp.bind(null, signUpUser))}>
-          <Field name="email" component={renderTextField} label="Email" type="email" />
-          <Field name="password" component={renderTextField} label="Password" type="password" />
-          <Field name="confirmPassword" component={renderTextField} label="Confirm password" type="password" />
-          <Button variant="raised" type="submit" color="primary" className="button-submit" >
-            Sign up
-          </Button>
-          <Link to={SIGN_IN} className="btn">
-            Already a member{'?'} yet Log in
-          </Link>
-        </form>
+  render(){
+
+  const { handleSubmit } = this.props;
+
+    return(
+      <div className="container">
+        <div className="">
+          <h2 className="text-center">Sign Up</h2>
+          <form onSubmit={handleSubmit(this.signUp)}>
+            <Field name="email" component={renderTextField} label="Email" type="email" />
+            <Field name="password" component={renderTextField} label="Password" type="password" />
+            <Field name="confirmPassword" component={renderTextField} label="Confirm password" type="password" />
+            <Button variant="raised" type="submit" color="primary" className="button-submit" >
+              Sign up
+            </Button>
+            <Link to={SIGN_IN} className="btn">
+              Already a member{'?'} yet Log in
+            </Link>
+          </form>
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 }
 
-export default connect(null, { signUpUser })(
+export default compose(
+  connect(null, { signUpUser }),
   reduxForm({
     form: "signup",
     validate: validate
-  })(SignUp)
-);
+  })
+)(SignUp);

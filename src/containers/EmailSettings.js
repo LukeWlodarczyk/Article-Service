@@ -12,9 +12,9 @@ const validate = values => {
     errors.password = "Please enter a password.";
   }
 
-  if (!values.email) {
+  if (!values.newEmail) {
     errors.newEmail = "Please enter an email.";
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.newEmail)) {
     errors.newEmail = 'Invalid email address'
   }
 
