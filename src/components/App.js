@@ -4,14 +4,15 @@ import { Route } from "react-router-dom";
 import { history } from "../store/store.js";
 import { connect } from "react-redux";
 import ReduxToastr from 'react-redux-toastr';
+import { compose } from '../helpers/compose';
 import SignIn from '../containers/SignIn';
 import SignUp from '../containers/SignUp';
 import Home from '../containers/Home';
 import Navigation from './Navigation';
 import Account from '../containers/Account';
 import AccountSettings from '../containers/AccountSettings';
-import AddOffert from '../containers/AddOffert';
-import Offerts from '../containers/Offerts';
+import AddArticle from '../containers/AddArticle';
+import Articles from '../containers/Articles';
 import PasswordForgetForm from '../containers/PasswordForgetForm';
 import * as routes from '../constants/routes';
 import { PrivateRoute, SignInUpRoute } from './Routes';
@@ -34,11 +35,11 @@ const App = ({ authenticated }) =>{
             progressBar
           />
           <Route exact path={routes.HOME} component={Home} />
-          <Route path={routes.OFFERTS} component={Offerts} />
+          <Route path={routes.ARTICLES} component={Articles} />
           <PrivateRoute
             authenticated={authenticated}
-            path={routes.ADD_OFFERT}
-            component={AddOffert}
+            path={routes.ADD_ARTICLE}
+            component={AddArticle}
           />
           <PrivateRoute
             authenticated={authenticated}
@@ -77,4 +78,7 @@ const mapStateToProps = (state) => {
   }
 }
  
-export default connect(mapStateToProps)(withRoot((App)))
+export default compose(
+  connect(mapStateToProps),
+  withRoot
+)(App)

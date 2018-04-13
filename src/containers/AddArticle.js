@@ -8,25 +8,19 @@ import { compose } from '../helpers/compose';
 const validate = (values) => {
   const errors = {};
 
-  if (!values.email) {
-    errors.email = "Please enter an email.";
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = 'Invalid email address'
+  if (!values.title) {
+    errors.title = "Title is required.";
   }
 
-  if (!values.password) {
-    errors.password = "Please enter a password.";
-  }
-
-  if (!values.ofertDescription) {
-    errors.ofertDescription = "Ofert description is required";
+  if (!values.articleBody) {
+    errors.articleBody = "Ofert description is required";
   }
 
   return errors;
 };
 
 
-class AddOffert extends Component {
+class AddArticle extends Component {
 
   addOfert = (values) => {
 
@@ -39,8 +33,8 @@ class AddOffert extends Component {
         <div className="">
           <h2 className="">Add ofert</h2>
           <form onSubmit={handleSubmit(this.addOfert)}>
-            <Field name="email" component={renderTextField} className="" type="text" label="Email"/>
-            <Field multiline rows="6" name="ofertDescription" component={renderTextField} className="" type="text" label="Ofert description"/>
+            <Field name="title" component={renderTextField} className="" type="text" label="Title"/>
+            <Field multiline rows="6" name="articleBody" component={renderTextField} className="" type="text" label="Article body"/>
             <Button variant="raised" type="submit" color="primary"  className="button-submit">
               Add
             </Button>
@@ -57,4 +51,4 @@ export default compose(
     form: 'addOffert',
     validate
   })
-)(AddOffert);
+)(AddArticle);

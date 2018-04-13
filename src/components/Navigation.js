@@ -11,10 +11,10 @@ const Navigation = ({ authenticated }) => (
           </div>
           <ul className="">
               <li className="">
-                  <Link className="" to="/offerts">Offerts</Link>
+                  <Link className="" to="/articles">Articles</Link>
               </li>
               <li className="">
-                  <Link className="" to="/add-offert">Add offert</Link>
+                  <Link className="" to="/add-article">Add article</Link>
               </li>
               {authenticated.uid === 'guest' ?
                 <React.Fragment>
