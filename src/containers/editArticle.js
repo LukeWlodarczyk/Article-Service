@@ -20,9 +20,9 @@ const validate = (values) => {
 };
 
 
-class AddArticle extends Component {
+class EditArticle extends Component {
 
-  addArticle = (values) => {
+  editArticle = (values) => {
 
   };
 
@@ -31,8 +31,8 @@ class AddArticle extends Component {
     return(
       <div className="container">
         <div className="">
-          <h2 className="">Add article</h2>
-          <form onSubmit={handleSubmit(this.addArticle)}>
+          <h2 className="">Edit article</h2>
+          <form onSubmit={handleSubmit(this.editArticle)}>
             <Field name="title" component={renderTextField} className="" type="text" label="Title"/>
             <Field multiline rows="6" name="articleBody" component={renderTextField} className="" type="text" label="Article body"/>
             <Button variant="raised" type="submit" color="primary"  className="button-submit">
@@ -48,7 +48,7 @@ class AddArticle extends Component {
 export default compose(
   connect(null, { }),
   reduxForm({
-    form: 'addArticle',
+    form: 'editArticle',
     validate
   })
-)(AddArticle);
+)(EditArticle);
