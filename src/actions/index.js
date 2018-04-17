@@ -1,4 +1,4 @@
-import { firebase, auth } from '../firebase/index';
+import { firebase, auth, db } from '../firebase/index';
 import { reset } from 'redux-form';
 import { push } from "react-router-redux";
 import { SIGN_IN, ACCOUNT, HOME } from '../constants/routes'
@@ -135,5 +135,18 @@ export const secureSensitiveAction = (password, type, newData) => (dispatch) => 
       dispatch(reset('passwordSettings'))
       dispatch(reset('emailSettings'))
       toastr.error('Wrong password!')
+    });
+};
+
+
+export const createArticle = ({ title, body }) => (dispatch) => {
+  const authorId = firebase.auth.currentUser.uid;
+  const articleId = `${authorId}/${new Date().getTime()}`
+  db.doCreateArticle(articleId, title, body, authorId)
+    .then(() => {
+      toastr.success('Article successfully added!');
+    })
+    .catch(error => {
+      toastr.error(error)
     });
 };

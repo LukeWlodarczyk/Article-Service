@@ -9,10 +9,11 @@ export const doCreateUser = (id, username, email) =>
 export const onceGetUsers = () =>
   db.ref('users').once('value');
 
-export const doCreateArticle = (id, title, body) =>
+export const doCreateArticle = (id, title, body, authorId) =>
   db.ref(`articles/${id}`).set({
     title,
     body,
+    authorId
   });
 
 export const onceGetArticles = () =>
