@@ -4,6 +4,7 @@ import Button from 'material-ui/Button';
 import { connect } from 'react-redux';
 import { renderTextField } from '../helpers/reduxFormField';
 import { compose } from '../helpers/compose';
+import { createArticle } from '../actions/index'
 
 const validate = (values) => {
   const errors = {};
@@ -23,7 +24,7 @@ const validate = (values) => {
 class AddArticle extends Component {
 
   addArticle = (values) => {
-
+    this.props.createArticle(values)
   };
 
   render() {
@@ -46,7 +47,7 @@ class AddArticle extends Component {
 }
 
 export default compose(
-  connect(null, { }),
+  connect(null, { createArticle }),
   reduxForm({
     form: 'addArticle',
     validate
