@@ -2,7 +2,7 @@ import { firebase, auth, db } from '../firebase/index';
 import { reset } from 'redux-form';
 import { push } from "react-router-redux";
 import { SIGN_IN, ACCOUNT, HOME } from '../constants/routes'
-import { AUTH_USER, AUTH_ERROR, SIGN_OUT_USER } from '../constants/action-types';
+import { AUTH_USER, AUTH_ERROR, SIGN_OUT_USER, DISPLAY_ARTICLES } from '../constants/action-types';
 import { toastr } from 'react-redux-toastr'
 
 export const pushUrl = (url) => dispatch => {
@@ -149,4 +149,18 @@ export const createArticle = ({ title, body }) => (dispatch) => {
     .catch(error => {
       toastr.error(error)
     });
+};
+
+
+export const displayArticle = () => (dispatch) => {
+  db.onceGetArticles()
+    .then( snapshot => {
+      dispatch({
+        type: DISPLAY_ARTICLES,
+        payload: snapshot.val()
+      })
+    })
+    .catch( error => {
+      toastr.error("Sorry, we couldn't get articles from database.")
+    })
 };

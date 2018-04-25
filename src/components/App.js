@@ -12,6 +12,7 @@ import Navigation from './Navigation';
 import Account from '../containers/Account';
 import AccountSettings from '../containers/AccountSettings';
 import AddArticle from '../containers/AddArticle';
+import EditArticle from '../containers/EditArticle';
 import Articles from '../containers/Articles';
 import PasswordForgetForm from '../containers/PasswordForgetForm';
 import * as routes from '../constants/routes';
@@ -40,6 +41,11 @@ const App = ({ authenticated }) =>{
             authenticated={authenticated}
             path={routes.ADD_ARTICLE}
             component={AddArticle}
+          />
+          <PrivateRoute
+            authenticated={authenticated}
+            path={routes.EDIT_ARTICLE}
+            component={EditArticle}
           />
           <PrivateRoute
             authenticated={authenticated}

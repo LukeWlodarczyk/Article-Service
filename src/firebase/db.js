@@ -16,5 +16,14 @@ export const doCreateArticle = (id, title, body, authorId) =>
     authorId
   });
 
+export const doEditArticle = (id, title, body, authorId) => {
+  db.ref(`articles/${authorId}/${id}`).set({
+    title,
+    body,
+    authorId
+  });
+}
+
+
 export const onceGetArticles = () =>
   db.ref('articles').once('value');

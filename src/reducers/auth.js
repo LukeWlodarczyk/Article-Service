@@ -1,4 +1,4 @@
-import {AUTH_USER, SIGN_OUT_USER, AUTH_ERROR} from '../constants/action-types';
+import { AUTH_USER, SIGN_OUT_USER, AUTH_ERROR } from '../constants/action-types';
 
 const initialState={
     authenticated: {

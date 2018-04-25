@@ -48,6 +48,7 @@ class AccountSettings extends Component {
 
     return (
       <div className={classes.root}>
+        <DeleteAccount secureSensitiveAction={this.props.secureSensitiveAction} />
         <AppBar position="static" color="default">
           <Tabs
             value={this.state.value}

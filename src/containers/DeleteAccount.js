@@ -48,6 +48,7 @@ class DeleteAccount extends Component {
 
   deleteAccount = (values) => {
     this.props.secureSensitiveAction(this.state.password, 'deleteAccount');
+    this.handleClose()
   }
 
   render() {
