@@ -14,6 +14,7 @@ import AccountSettings from '../containers/AccountSettings';
 import AddArticle from '../containers/AddArticle';
 import EditArticle from '../containers/EditArticle';
 import Articles from '../containers/Articles';
+import Article from '../containers/Article';
 import PasswordForgetForm from '../containers/PasswordForgetForm';
 import * as routes from '../constants/routes';
 import { PrivateRoute, SignInUpRoute } from './Routes';
@@ -37,6 +38,7 @@ const App = ({ authenticated }) =>{
           />
           <Route exact path={routes.HOME} component={Home} />
           <Route path={routes.ARTICLES} component={Articles} />
+          <Route path={routes.ARTICLE} component={Article} />
           <PrivateRoute
             authenticated={authenticated}
             path={routes.ADD_ARTICLE}

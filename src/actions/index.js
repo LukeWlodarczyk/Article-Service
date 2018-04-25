@@ -145,6 +145,7 @@ export const createArticle = ({ title, body }) => (dispatch) => {
   db.doCreateArticle(articleId, title, body, authorId)
     .then(() => {
       toastr.success('Article successfully added!');
+      dispatch(pushUrl(`/articles/${articleId}`));
     })
     .catch(error => {
       toastr.error(error)

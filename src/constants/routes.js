@@ -6,4 +6,5 @@ export const ACCOUNT = '/profile';
 export const ADD_ARTICLE = '/add-article';
 export const EDIT_ARTICLE = '/edit-article';
 export const ARTICLES = '/articles';
+export const ARTICLE = '/articles/:id';
 export const ACCOUNT_SETTINGS = '/profile/settings';
