@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { displayArticle } from '../actions/index';
+import { displayArticles } from '../actions/index';
 import { Link } from 'react-router-dom';
 
 const mapStateToProps = (state) => {
   return {
-    articles: state.articles
+    articles: state.articles.articles
   }
 }
 
 class Articles extends Component {
 
   componentDidMount() {
-    this.props.displayArticle();
+    this.props.displayArticles();
   };
 
 
@@ -39,4 +39,4 @@ class Articles extends Component {
 
 
 
-export default connect(mapStateToProps, { displayArticle })(Articles);
+export default connect(mapStateToProps, { displayArticles })(Articles);

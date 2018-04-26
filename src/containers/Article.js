@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => {
   return {
-    articles: state.articles
+    article: state.articles.article
   }
 }
 
@@ -14,8 +14,12 @@ class Article extends Component {
   };
 
   render() {
+    const { title, body } = this.props.article;
     return (
-      <div>Article</div>
+      <article>
+        <h2>{title}</h2>
+        <p>{body}</p>
+      </article>
     );
   }
 }

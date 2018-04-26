@@ -1,10 +1,23 @@
-import { DISPLAY_ARTICLES } from '../constants/action-types';
+import { DISPLAY_ARTICLES, DISPLAY_ARTICLE } from '../constants/action-types';
 
-export default (state=[], action) => {
+const initialState = {
+  articles: [],
+  article: {}
+}
+
+export default (state=initialState, action) => {
 
   switch(action.type){
       case DISPLAY_ARTICLES:
-          return action.payload
+          return {
+            ...state,
+            articles: action.payload,
+          }
+      case DISPLAY_ARTICLE:
+          return {
+            ...state,
+            article: action.payload
+          }
       default:
            return state;
 

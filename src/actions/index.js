@@ -2,7 +2,7 @@ import { firebase, auth, db } from '../firebase/index';
 import { reset } from 'redux-form';
 import { push } from "react-router-redux";
 import { SIGN_IN, ACCOUNT, HOME } from '../constants/routes'
-import { AUTH_USER, AUTH_ERROR, SIGN_OUT_USER, DISPLAY_ARTICLES } from '../constants/action-types';
+import { AUTH_USER, AUTH_ERROR, SIGN_OUT_USER, DISPLAY_ARTICLES, DISPLAY_ARTICLE } from '../constants/action-types';
 import { toastr } from 'react-redux-toastr'
 
 export const pushUrl = (url) => dispatch => {
@@ -148,12 +148,12 @@ export const createArticle = ({ title, body }) => (dispatch) => {
       dispatch(pushUrl(`/articles/${articleId}`));
     })
     .catch(error => {
-      toastr.error(error)
+      toastr.error("Sorry, we couldn't create new article. Try again!")
     });
 };
 
 
-export const displayArticle = () => (dispatch) => {
+export const displayArticles = () => (dispatch) => {
   db.onceGetArticles()
     .then( snapshot => {
       dispatch({
@@ -165,3 +165,16 @@ export const displayArticle = () => (dispatch) => {
       toastr.error("Sorry, we couldn't get articles from database.")
     })
 };
+
+// export const displayArticle = () => (dispatch) => {
+//   db.onceGetArticles()
+//     .then( snapshot => {
+//       dispatch({
+//         type: DISPLAY_ARTICLE,
+//         payload: snapshot.val()
+//       })
+//     })
+//     .catch( error => {
+//       toastr.error("Sorry, we couldn't get this article from database.")
+//     })
+// };

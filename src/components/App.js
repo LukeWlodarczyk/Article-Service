@@ -37,7 +37,7 @@ const App = ({ authenticated }) =>{
             progressBar
           />
           <Route exact path={routes.HOME} component={Home} />
-          <Route path={routes.ARTICLES} component={Articles} />
+          <Route exact path={routes.ARTICLES} component={Articles} />
           <Route path={routes.ARTICLE} component={Article} />
           <PrivateRoute
             authenticated={authenticated}
