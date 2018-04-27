@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { displayArticle } from '../actions/index';
 
 const mapStateToProps = (state) => {
   return {
@@ -10,7 +11,9 @@ const mapStateToProps = (state) => {
 class Article extends Component {
 
   componentDidMount() {
-
+    console.log('hello');
+    console.log(this.props.match.params.id);
+    this.props.displayArticle(this.props.match.params.id)
   };
 
   render() {
@@ -26,4 +29,4 @@ class Article extends Component {
 
 
 
-export default connect(mapStateToProps)(Article);
+export default connect(mapStateToProps, { displayArticle })(Article);

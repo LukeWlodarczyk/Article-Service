@@ -141,7 +141,8 @@ export const secureSensitiveAction = (password, type, newData) => (dispatch) => 
 
 export const createArticle = ({ title, body }) => (dispatch) => {
   const authorId = firebase.auth.currentUser.uid;
-  const articleId = `${authorId}/${new Date().getTime()}`
+  // const articleId = `${authorId}/${new Date().getTime()}`
+  const articleId = db.ref('/').child('articles').push().key;
   db.doCreateArticle(articleId, title, body, authorId)
     .then(() => {
       toastr.success('Article successfully added!');
@@ -166,15 +167,22 @@ export const displayArticles = () => (dispatch) => {
     })
 };
 
-// export const displayArticle = () => (dispatch) => {
-//   db.onceGetArticles()
-//     .then( snapshot => {
-//       dispatch({
-//         type: DISPLAY_ARTICLE,
-//         payload: snapshot.val()
-//       })
-//     })
-//     .catch( error => {
-//       toastr.error("Sorry, we couldn't get this article from database.")
-//     })
-// };
+export const displayAarticle = (id) => (dispatch) => {
+  console.log(id);
+  db.doShowArticle(id)
+    .then( article => {
+      console.log(article);
+      dispatch({
+        type: DISPLAY_ARTICLE,
+        payload: article
+      })
+    })
+    .catch( error => {
+      toastr.error("Sorry, we couldn't get this article from database.")
+    })
+};
+
+export const displayArticle = (id) => (dispatch) => {
+  console.log(id);
+  db.doShowArticle(id)
+}
