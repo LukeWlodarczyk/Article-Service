@@ -43,14 +43,14 @@ class App extends Component {
             transitionOut="bounceOutUp"
             progressBar
           />
-          <Route exact path={routes.HOME} component={Home} />
           <Route exact path={routes.ARTICLES} component={Articles} />
-          <Route exact path={routes.ARTICLE} component={Article} />
           <PrivateRoute
+            exact
             authenticated={authenticated}
             path={routes.ADD_ARTICLE}
             component={AddArticle}
           />
+          <Route exact path={routes.ARTICLE} component={Article} />
           <PrivateRoute
             exact
             authenticated={authenticated}

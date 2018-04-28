@@ -1,7 +1,7 @@
 import { firebase, auth, db } from '../firebase/index';
 import { reset } from 'redux-form';
 import { push } from "react-router-redux";
-import { SIGN_IN, ACCOUNT, HOME } from '../constants/routes'
+import { SIGN_IN, ACCOUNT, ARTICLES } from '../constants/routes'
 import { AUTH_USER, AUTH_ERROR, SIGN_OUT_USER, DISPLAY_ARTICLES, DISPLAY_ARTICLE } from '../constants/action-types';
 import { toastr } from 'react-redux-toastr'
 
@@ -101,7 +101,7 @@ export const secureSensitiveAction = (password, type, newData) => (dispatch) => 
       type === 'passwordUpdate' &&
         auth.doPasswordUpdate(newData)
           .then( () => {
-            dispatch(push(ACCOUNT));
+            dispatch(push(ARTICLES));
             toastr.success('Password updated!');
           })
           .catch(error => {
@@ -123,7 +123,7 @@ export const secureSensitiveAction = (password, type, newData) => (dispatch) => 
       type === 'deleteAccount' &&
         auth.doDeleteAccount()
           .then( () => {
-            dispatch(push(HOME));
+            dispatch(push(ARTICLES));
             toastr.success('Account successfully deleted!');
           })
           .catch(error => {

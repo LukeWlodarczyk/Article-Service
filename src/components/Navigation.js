@@ -7,15 +7,9 @@ const Navigation = ({ authenticated }) => (
   <nav className="">
       <div className="">
           <div className="">
-              <Link className="" to="/">home</Link>
+              <Link className="" to="/">Articles</Link>
           </div>
           <ul className="">
-              <li className="">
-                  <Link className="" to="/articles">Articles</Link>
-              </li>
-              <li className="">
-                  <Link className="" to="/articles/add">Add article</Link>
-              </li>
               {authenticated.uid === 'guest' ?
                 <React.Fragment>
                   <li className="">

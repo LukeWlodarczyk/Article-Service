@@ -10,6 +10,7 @@ import MenuButton from 'material-ui-icons/Menu';
 import AccountBox from 'material-ui-icons/AccountBox';
 import Settings from 'material-ui-icons/Settings';
 import Power from 'material-ui-icons/PowerSettingsNew';
+import AddCircleOutline from 'material-ui-icons/AddCircleOutline';
 
 class AccountMenu extends Component {
   state = {
@@ -53,6 +54,12 @@ class AccountMenu extends Component {
               <AccountBox />
             </ListItemIcon>
             <ListItemText inset primary="Profile" />
+          </MenuItem>
+          <MenuItem onClick={this.handleLink("/add-article")} >
+            <ListItemIcon>
+              <AddCircleOutline />
+            </ListItemIcon>
+            <ListItemText inset primary="Add article" />
           </MenuItem>
           <MenuItem onClick={this.handleLink("/profile/settings")}>
             <ListItemIcon>
