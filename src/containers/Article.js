@@ -1,32 +1,36 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { displayArticle } from '../actions/index';
+import { Link } from 'react-router-dom';
 
 const mapStateToProps = (state) => {
   return {
-    article: state.articles.article
+    articles: state.articles,
+    userId: state.auth.authenticated.uid,
   }
 }
 
 class Article extends Component {
 
-  componentDidMount() {
-    console.log('hello');
-    console.log(this.props.match.params.id);
-    this.props.displayArticle(this.props.match.params.id)
-  };
 
   render() {
-    const { title, body } = this.props.article;
+    if(!this.props.articles || !this.props.articles[this.props.match.params.id]) {
+      return <div>Loading</div>
+    }
+
+    const { title, body } = this.props.articles[this.props.match.params.id];
     return (
       <article>
         <h2>{title}</h2>
         <p>{body}</p>
+        {this.props.userId === this.props.articles[this.props.match.params.id].authorId &&
+          <Link to={`/articles/${this.props.match.params.id}/edit`}> Edit </Link>
+        }
       </article>
     );
+
   }
 }
 
 
 
-export default connect(mapStateToProps, { displayArticle })(Article);
+export default connect(mapStateToProps)(Article);

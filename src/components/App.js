@@ -16,13 +16,20 @@ import EditArticle from '../containers/EditArticle';
 import Articles from '../containers/Articles';
 import Article from '../containers/Article';
 import PasswordForgetForm from '../containers/PasswordForgetForm';
+import { displayArticles } from '../actions/index';
 import * as routes from '../constants/routes';
 import { PrivateRoute, SignInUpRoute } from './Routes';
 
 import withRoot from './withRoot';
 
-const App = ({ authenticated }) =>{
-  console.log(authenticated);
+class App extends Component {
+
+  componentDidMount() {
+    this.props.displayArticles();
+  };
+
+  render() {
+    const { authenticated } = this.props;
     return (
       <ConnectedRouter history={history}>
         <div>
@@ -38,13 +45,14 @@ const App = ({ authenticated }) =>{
           />
           <Route exact path={routes.HOME} component={Home} />
           <Route exact path={routes.ARTICLES} component={Articles} />
-          <Route path={routes.ARTICLE} component={Article} />
+          <Route exact path={routes.ARTICLE} component={Article} />
           <PrivateRoute
             authenticated={authenticated}
             path={routes.ADD_ARTICLE}
             component={AddArticle}
           />
           <PrivateRoute
+            exact
             authenticated={authenticated}
             path={routes.EDIT_ARTICLE}
             component={EditArticle}
@@ -77,6 +85,7 @@ const App = ({ authenticated }) =>{
         </div>
       </ConnectedRouter>
     )
+  }
 }
 
 
@@ -87,6 +96,6 @@ const mapStateToProps = (state) => {
 }
  
 export default compose(
-  connect(mapStateToProps),
+  connect(mapStateToProps, { displayArticles }),
   withRoot
 )(App)

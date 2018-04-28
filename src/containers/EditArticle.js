@@ -19,8 +19,25 @@ const validate = (values) => {
   return errors;
 };
 
+const mapStateToProps = (state, ownProps) => {
+  return {
+    articles: state.articles,
+    userId: state.auth.authenticated.uid,
+    initialValues: {
+      title: state.articles[ownProps.match.params.id].title,
+      body: state.articles[ownProps.match.params.id].body
+    }
+  }
+}
+
 
 class EditArticle extends Component {
+
+  componentDidMount() {
+    if(this.props.articles[this.props.match.params.id].authorId !== this.props.userId) {
+      console.log('not allowed');
+    }
+  }
 
   editArticle = (values) => {
 
@@ -34,9 +51,9 @@ class EditArticle extends Component {
           <h2 className="">Edit article</h2>
           <form onSubmit={handleSubmit(this.editArticle)}>
             <Field name="title" component={renderTextField} className="" type="text" label="Title"/>
-            <Field multiline rows="6" name="articleBody" component={renderTextField} className="" type="text" label="Article body"/>
+            <Field multiline rows="6" name="body" component={renderTextField} className="" type="text" label="Article body"/>
             <Button variant="raised" type="submit" color="primary"  className="button-submit">
-              Add
+              Edit
             </Button>
           </form>
         </div>
@@ -46,7 +63,7 @@ class EditArticle extends Component {
 }
 
 export default compose(
-  connect(null, { }),
+  connect(mapStateToProps, { }),
   reduxForm({
     form: 'editArticle',
     validate

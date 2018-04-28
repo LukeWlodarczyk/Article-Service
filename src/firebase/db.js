@@ -9,31 +9,24 @@ export const doCreateUser = (id, username, email) =>
 export const onceGetUsers = () =>
   db.ref('users').once('value');
 
-// export const doCreateArticle = (id, title, body, authorId) =>
-//   db.ref(`articles/${id}`).set({
-//     title,
-//     body,
-//     authorId
-//   });
 
-export const doCreateArticle = (id, title, body, authorId) => {
+export const doCreateArticle = (articleId, title, body, authorId) => {
   const updates = {};
-  updates['/articles/' + id] = {
+  updates['/articles/' + articleId] = {
     title,
     body,
     authorId
   };
-  updates[`/${authorId}/${id}`] = {
+  updates[`/${authorId}/${articleId}`] = {
     title,
     body,
     authorId
   };
-
   return db.ref().update(updates)
 }
 
 export const doShowArticle = (id) =>
-  db.ref(`articles/4led3u5Cr3TXd476hKx6EPrDYBa2/${id}`).on('value', snapshot => {console.log('///',snapshot.val())} );
+  db.ref(`articles/${id}`).on('value', snapshot => {console.log('///',snapshot.val())} );
 
 export const doEditArticle = (id, title, body, authorId) => {
   db.ref(`articles/${authorId}/${id}`).set({

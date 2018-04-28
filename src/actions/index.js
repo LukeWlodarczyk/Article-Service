@@ -138,22 +138,6 @@ export const secureSensitiveAction = (password, type, newData) => (dispatch) => 
     });
 };
 
-
-export const createArticle = ({ title, body }) => (dispatch) => {
-  const authorId = firebase.auth.currentUser.uid;
-  // const articleId = `${authorId}/${new Date().getTime()}`
-  const articleId = db.ref('/').child('articles').push().key;
-  db.doCreateArticle(articleId, title, body, authorId)
-    .then(() => {
-      toastr.success('Article successfully added!');
-      dispatch(pushUrl(`/articles/${articleId}`));
-    })
-    .catch(error => {
-      toastr.error("Sorry, we couldn't create new article. Try again!")
-    });
-};
-
-
 export const displayArticles = () => (dispatch) => {
   db.onceGetArticles()
     .then( snapshot => {
@@ -167,22 +151,16 @@ export const displayArticles = () => (dispatch) => {
     })
 };
 
-export const displayAarticle = (id) => (dispatch) => {
-  console.log(id);
-  db.doShowArticle(id)
-    .then( article => {
-      console.log(article);
-      dispatch({
-        type: DISPLAY_ARTICLE,
-        payload: article
-      })
+export const createArticle = ({ title, body }) => (dispatch) => {
+  const authorId = firebase.auth.currentUser.uid;
+  const articleId = firebase.db.ref('/').child('articles').push().key;
+  db.doCreateArticle(articleId, title, body, authorId)
+    .then(() => {
+      toastr.success('Article successfully added!');
+      displayArticles()(dispatch);
+      dispatch(pushUrl(`/articles/${articleId}`));
     })
-    .catch( error => {
-      toastr.error("Sorry, we couldn't get this article from database.")
-    })
+    .catch(error => {
+      toastr.error("Sorry, we couldn't create new article. Try again!")
+    });
 };
-
-export const displayArticle = (id) => (dispatch) => {
-  console.log(id);
-  db.doShowArticle(id)
-}

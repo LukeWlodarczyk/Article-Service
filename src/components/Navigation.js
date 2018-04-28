@@ -14,7 +14,7 @@ const Navigation = ({ authenticated }) => (
                   <Link className="" to="/articles">Articles</Link>
               </li>
               <li className="">
-                  <Link className="" to="/add-article">Add article</Link>
+                  <Link className="" to="/articles/add">Add article</Link>
               </li>
               {authenticated.uid === 'guest' ?
                 <React.Fragment>
