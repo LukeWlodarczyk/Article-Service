@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { deleteArticle } from '../actions/index';
 
 const mapStateToProps = (state) => {
   return {
@@ -11,6 +12,10 @@ const mapStateToProps = (state) => {
 
 class Article extends Component {
 
+  deleteArticle = () => {
+    console.log(this.props.match.params.id);
+    this.props.deleteArticle(this.props.match.params.id)
+  }
 
   render() {
     if(!this.props.articles || !this.props.articles[this.props.match.params.id]) {
@@ -23,7 +28,10 @@ class Article extends Component {
         <h2>{title}</h2>
         <p>{body}</p>
         {this.props.userId === this.props.articles[this.props.match.params.id].authorId &&
-          <Link to={`/articles/${this.props.match.params.id}/edit`}> Edit </Link>
+          <div>
+            <Link to={`/articles/${this.props.match.params.id}/edit`}> Edit </Link>
+            <button onClick={this.deleteArticle}>Delete</button>
+          </div>
         }
       </article>
     );
@@ -33,4 +41,4 @@ class Article extends Component {
 
 
 
-export default connect(mapStateToProps)(Article);
+export default connect(mapStateToProps, { deleteArticle })(Article);

@@ -4,6 +4,7 @@ import Button from 'material-ui/Button';
 import { connect } from 'react-redux';
 import { renderTextField } from '../helpers/reduxFormField';
 import { compose } from '../helpers/compose';
+import { editArticle } from '../actions/index';
 
 const validate = (values) => {
   const errors = {};
@@ -40,7 +41,8 @@ class EditArticle extends Component {
   }
 
   editArticle = (values) => {
-
+    console.log(this.props.match.params.id);
+    this.props.editArticle(this.props.match.params.id, values);
   };
 
   render() {
@@ -63,7 +65,7 @@ class EditArticle extends Component {
 }
 
 export default compose(
-  connect(mapStateToProps, { }),
+  connect(mapStateToProps, { editArticle }),
   reduxForm({
     form: 'editArticle',
     validate

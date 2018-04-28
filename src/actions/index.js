@@ -164,3 +164,29 @@ export const createArticle = ({ title, body }) => (dispatch) => {
       toastr.error("Sorry, we couldn't create new article. Try again!")
     });
 };
+
+export const editArticle = (articleId, { title, body }) => (dispatch) => {
+  const authorId = firebase.auth.currentUser.uid;
+  db.doEditArticle(articleId, title, body, authorId)
+    .then(() => {
+      toastr.success('Article successfully edited!');
+      displayArticles()(dispatch);
+      dispatch(pushUrl(`/articles/${articleId}`));
+    })
+    .catch(error => {
+      toastr.error("Sorry, we couldn't edit this article. Try again!")
+    });
+};
+
+export const deleteArticle = (articleId) => (dispatch) => {
+  const authorId = firebase.auth.currentUser.uid;
+  db.doDeleteArticle(articleId, authorId)
+    .then(() => {
+      toastr.success('Article successfully deleted!');
+      displayArticles()(dispatch);
+      dispatch(pushUrl(`/articles`));
+    })
+    .catch(error => {
+      toastr.error("Sorry, we couldn't delete this article. Try again!")
+    });
+};

@@ -25,16 +25,29 @@ export const doCreateArticle = (articleId, title, body, authorId) => {
   return db.ref().update(updates)
 }
 
-export const doShowArticle = (id) =>
-  db.ref(`articles/${id}`).on('value', snapshot => {console.log('///',snapshot.val())} );
-
-export const doEditArticle = (id, title, body, authorId) => {
-  db.ref(`articles/${authorId}/${id}`).set({
+export const doEditArticle = (articleId, title, body, authorId) => {
+  const updates = {};
+  updates['/articles/' + articleId] = {
     title,
     body,
     authorId
-  });
+  };
+  updates[`/${authorId}/${articleId}`] = {
+    title,
+    body,
+    authorId
+  };
+  return db.ref().update(updates)
 }
+
+export const doDeleteArticle = (articleId, authorId) => {
+  const updates = {};
+  updates['/articles/' + articleId] = null
+  updates[`/${authorId}/${articleId}`] = null
+  return db.ref().update(updates)
+}
+
+
 
 
 export const onceGetArticles = () =>
