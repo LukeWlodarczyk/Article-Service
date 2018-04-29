@@ -19,7 +19,7 @@ const Navigation = ({ authenticated }) => (
                   </li>
                 </React.Fragment> :
                 <li className="">
-                    <AccountMenu />
+                    <AccountMenu userId={authenticated.uid} />
                 </li>
               }
           </ul>

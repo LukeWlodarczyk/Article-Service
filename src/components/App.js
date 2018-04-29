@@ -56,8 +56,7 @@ class App extends Component {
             path={routes.EDIT_ARTICLE}
             component={EditArticle}
           />
-          <PrivateRoute
-            authenticated={authenticated}
+          <Route
             exact path={routes.ACCOUNT}
             component={Account}
           />

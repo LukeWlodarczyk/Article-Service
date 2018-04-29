@@ -48,10 +48,13 @@ class Article extends Component {
             />
           </div>
         }
-        <AddComment
-          articleId={this.props.match.params.id}
-          addComment={this.props.addComment}
-        />
+        {this.props.userId !== 'guest' ?
+          <AddComment
+            articleId={this.props.match.params.id}
+            addComment={this.props.addComment}
+          /> :
+          <p><Link to='/signup'>Register</Link> or <Link to='/signin'>log in</Link> to add comments.</p>
+      }
         {this.props.comments && <Comments comments={this.props.comments} />}
       </article>
     );

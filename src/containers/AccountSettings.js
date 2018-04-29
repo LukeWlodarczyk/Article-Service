@@ -6,7 +6,7 @@ import AppBar from 'material-ui/AppBar';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import Typography from 'material-ui/Typography';
 import { connect } from 'react-redux';
-import { secureSensitiveAction } from '../actions/index';
+import { secureSensitiveAction, replaceUrl } from '../actions/index';
 import EmailSettings from './EmailSettings';
 import PasswordSettings from './PasswordSettings';
 import DeleteModal from './DeleteModal';
@@ -42,6 +42,12 @@ class AccountSettings extends Component {
   handleChangeIndex = index => {
     this.setState({ value: index });
   };
+
+  componentWillMount() {
+    if(this.props.userId !== this.props.match.params.id) {
+      this.props.replaceUrl('/');
+    }
+  }
 
   render() {
     const { classes, theme } = this.props;
@@ -84,6 +90,12 @@ class AccountSettings extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    userId: state.auth.authenticated.uid,
+  }
+}
+
 AccountSettings.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
@@ -91,5 +103,5 @@ AccountSettings.propTypes = {
 
 export default compose(
   withStyles(styles, { withTheme: true }),
-  connect(null, { secureSensitiveAction })
+  connect(mapStateToProps, { secureSensitiveAction, replaceUrl })
 )(AccountSettings);

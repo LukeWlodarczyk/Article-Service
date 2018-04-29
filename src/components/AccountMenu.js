@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { signOutUser, pushUrl } from '../actions/index';
+import { signOutUser, replaceUrl } from '../actions/index';
 import { connect } from 'react-redux';
 import Button from 'material-ui/Button';
 import Menu, { MenuItem } from 'material-ui/Menu';
@@ -26,7 +26,7 @@ class AccountMenu extends Component {
   };
 
   handleLink = url => () => {
-    this.props.pushUrl(url);
+    this.props.replaceUrl(url);
     this.handleClose()
   }
 
@@ -49,7 +49,7 @@ class AccountMenu extends Component {
           open={Boolean(anchorEl)}
           onClose={this.handleClose}
         >
-          <MenuItem onClick={this.handleLink("/profile")} >
+          <MenuItem onClick={this.handleLink("/users/"+this.props.userId)} >
             <ListItemIcon>
               <AccountBox />
             </ListItemIcon>
@@ -61,7 +61,7 @@ class AccountMenu extends Component {
             </ListItemIcon>
             <ListItemText inset primary="Add article" />
           </MenuItem>
-          <MenuItem onClick={this.handleLink("/profile/settings")}>
+          <MenuItem onClick={this.handleLink("/users/"+this.props.userId+"/settings")}>
             <ListItemIcon>
               <Settings />
             </ListItemIcon>
@@ -79,4 +79,4 @@ class AccountMenu extends Component {
   }
 }
 
-export default connect(null, { signOutUser, pushUrl })(AccountMenu);
+export default connect(null, { signOutUser, replaceUrl })(AccountMenu);

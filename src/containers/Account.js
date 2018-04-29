@@ -7,8 +7,8 @@ import { ACCOUNT_SETTINGS } from '../constants/routes'
 class Account extends Component {
 
   componentDidMount() {
-    const { emailVerified } = this.props.authenticated;
-    if(!emailVerified) {
+    const { emailVerified, uid } = this.props.authenticated;
+    if(!emailVerified && uid !== 'guest') {
       toastr.info('Please verify your email')
     }
   }
@@ -17,7 +17,7 @@ class Account extends Component {
     return (
       <div>
         <p>Account</p>
-        <Link className="" to={"/profile/settings"}>Settings</Link>
+        <Link className="" to={"/users/"+ this.props.match.params.id +"/settings"}>Settings</Link>
       </div>
     )
   }

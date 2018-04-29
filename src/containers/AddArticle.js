@@ -14,7 +14,7 @@ const validate = (values) => {
   }
 
   if (!values.body) {
-    errors.body = "Ofert description is required";
+    errors.body = "Body is required";
   }
 
   return errors;

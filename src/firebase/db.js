@@ -12,9 +12,10 @@ export const onceGetUsers = () =>
 export const doGetComments = (articleId) =>
   db.ref('comments/'+articleId).once('value');
 
-export const doCreateArticle = (articleId, title, body, authorId) => {
+export const doCreateArticle = (articleId, {title, body, authorId, date}) => {
   const updates = {};
   updates['/articles/' + articleId] = {
+    date,
     title,
     body,
     authorId,

@@ -1,9 +1,9 @@
 export const SIGN_UP = '/signup';
 export const SIGN_IN = '/signin';
 export const PASSWORD_FORGET = '/password-forget';
-export const ACCOUNT = '/profile';
+export const ACCOUNT = '/users/:id';
 export const ADD_ARTICLE = '/add-article';
 export const EDIT_ARTICLE = '/articles/:id/edit';
 export const ARTICLES = '/';
 export const ARTICLE = '/articles/:id';
-export const ACCOUNT_SETTINGS = '/profile/settings';
+export const ACCOUNT_SETTINGS = '/users/:id/settings';

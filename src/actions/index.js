@@ -1,12 +1,12 @@
 import { firebase, auth, db } from '../firebase/index';
 import { reset } from 'redux-form';
-import { push } from "react-router-redux";
+import { replace, push } from "react-router-redux";
 import { SIGN_IN, ACCOUNT, ARTICLES } from '../constants/routes'
 import { AUTH_USER, AUTH_ERROR, SIGN_OUT_USER, DISPLAY_ARTICLES, DISPLAY_ARTICLE, DISPLAY_COMMENTS } from '../constants/action-types';
 import { toastr } from 'react-redux-toastr'
 
-export const pushUrl = (url) => dispatch => {
-    dispatch(push(url))
+export const replaceUrl = (url) => dispatch => {
+    dispatch(replace(url))
 };
 
 export const verifyAuth = () => dispatch => {
@@ -101,7 +101,7 @@ export const secureSensitiveAction = (password, type, newData) => (dispatch) => 
       type === 'passwordUpdate' &&
         auth.doPasswordUpdate(newData)
           .then( () => {
-            dispatch(push(ARTICLES));
+            dispatch(push('users'+firebase.auth.currentUser.uid));
             toastr.success('Password updated!');
           })
           .catch(error => {
@@ -112,7 +112,7 @@ export const secureSensitiveAction = (password, type, newData) => (dispatch) => 
       type === 'emailUpdate' &&
         auth.doEmailUpdate(newData)
           .then( () => {
-            dispatch(push(ACCOUNT));
+            dispatch(push('users'+firebase.auth.currentUser.uid));
             toastr.success('Email updated!');
           })
           .catch(error => {
@@ -167,11 +167,12 @@ export const displayComments = (articleId) => (dispatch) => {
 export const createArticle = ({ title, body }) => (dispatch) => {
   const authorId = firebase.auth.currentUser.uid;
   const articleId = firebase.db.ref('/').child('articles').push().key;
-  db.doCreateArticle(articleId, title, body, authorId)
+  const date = new Date();
+  db.doCreateArticle(articleId, {title, body, authorId, date})
     .then(() => {
       toastr.success('Article successfully added!');
       displayArticles()(dispatch);
-      dispatch(pushUrl(`/articles/${articleId}`));
+      dispatch(push(`/articles/${articleId}`));
     })
     .catch(error => {
       toastr.error("Sorry, we couldn't create new article. Try again!")
@@ -183,7 +184,7 @@ export const editArticle = (articleId, { title, body }) => (dispatch) => {
     .then(() => {
       toastr.success('Article successfully edited!');
       displayArticles()(dispatch);
-      dispatch(pushUrl(`/articles/${articleId}`));
+      dispatch(push(`/articles/${articleId}`));
     })
     .catch(error => {
       toastr.error("Sorry, we couldn't edit this article. Try again!")
@@ -192,8 +193,9 @@ export const editArticle = (articleId, { title, body }) => (dispatch) => {
 
 export const addComment = (articleId, comment) => (dispatch) => {
   const commentId = firebase.db.ref('/').child('comments/'+articleId).push().key;
-
+  const date = new Date();
   const commentObj = {
+    date,
     comment,
     authorId: firebase.auth.currentUser.uid,
     authorEmail: firebase.auth.currentUser.email
@@ -202,7 +204,7 @@ export const addComment = (articleId, comment) => (dispatch) => {
     .then(() => {
       toastr.success('Comment successfully added!');
       dispatch(reset('addComment'));
-      dispatch(pushUrl(`/articles/${articleId}`));
+      dispatch(push(`/articles/${articleId}`));
       displayComments(articleId)(dispatch);
     })
     .catch(error => {
@@ -219,7 +221,7 @@ export const deleteArticle = (password, articleId) => (dispatch) => {
         .then(() => {
           toastr.success('Article successfully deleted!');
           displayArticles()(dispatch);
-          dispatch(pushUrl(`/`));
+          dispatch(push('/'));
         })
         .catch(error => {
           toastr.error("Sorry, we couldn't delete this article. Try again!")
