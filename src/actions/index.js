@@ -2,7 +2,7 @@ import { firebase, auth, db } from '../firebase/index';
 import { reset } from 'redux-form';
 import { push } from "react-router-redux";
 import { SIGN_IN, ACCOUNT, ARTICLES } from '../constants/routes'
-import { AUTH_USER, AUTH_ERROR, SIGN_OUT_USER, DISPLAY_ARTICLES, DISPLAY_ARTICLE } from '../constants/action-types';
+import { AUTH_USER, AUTH_ERROR, SIGN_OUT_USER, DISPLAY_ARTICLES, DISPLAY_ARTICLE, DISPLAY_COMMENTS } from '../constants/action-types';
 import { toastr } from 'react-redux-toastr'
 
 export const pushUrl = (url) => dispatch => {
@@ -151,6 +151,19 @@ export const displayArticles = () => (dispatch) => {
     })
 };
 
+export const displayComments = (articleId) => (dispatch) => {
+  db.doGetComments(articleId)
+    .then( snapshot => {
+      dispatch({
+        type: DISPLAY_COMMENTS,
+        payload: snapshot.val()
+      })
+    })
+    .catch( error => {
+      toastr.error("Sorry, we couldn't get comments from database.")
+    })
+};
+
 export const createArticle = ({ title, body }) => (dispatch) => {
   const authorId = firebase.auth.currentUser.uid;
   const articleId = firebase.db.ref('/').child('articles').push().key;
@@ -166,8 +179,7 @@ export const createArticle = ({ title, body }) => (dispatch) => {
 };
 
 export const editArticle = (articleId, { title, body }) => (dispatch) => {
-  const authorId = firebase.auth.currentUser.uid;
-  db.doEditArticle(articleId, title, body, authorId)
+  db.doEditArticle(articleId, title, body)
     .then(() => {
       toastr.success('Article successfully edited!');
       displayArticles()(dispatch);
@@ -178,15 +190,43 @@ export const editArticle = (articleId, { title, body }) => (dispatch) => {
     });
 };
 
-export const deleteArticle = (articleId) => (dispatch) => {
-  const authorId = firebase.auth.currentUser.uid;
-  db.doDeleteArticle(articleId, authorId)
+export const addComment = (articleId, comment) => (dispatch) => {
+  const commentId = firebase.db.ref('/').child('comments/'+articleId).push().key;
+
+  const commentObj = {
+    comment,
+    authorId: firebase.auth.currentUser.uid,
+    authorEmail: firebase.auth.currentUser.email
+  }
+  db.doAddComment(commentObj, commentId, articleId)
     .then(() => {
-      toastr.success('Article successfully deleted!');
-      displayArticles()(dispatch);
-      dispatch(pushUrl(`/articles`));
+      toastr.success('Comment successfully added!');
+      dispatch(reset('addComment'));
+      dispatch(pushUrl(`/articles/${articleId}`));
+      displayComments(articleId)(dispatch);
     })
     .catch(error => {
-      toastr.error("Sorry, we couldn't delete this article. Try again!")
+      toastr.error("Sorry, we couldn't add comment. Try again!")
+    });
+};
+
+export const deleteArticle = (password, articleId) => (dispatch) => {
+  const credential = auth.doCredentials({ email: firebase.auth.currentUser.email, password });
+  auth.doReauthenticate(credential)
+    .then( () => {
+      const authorId = firebase.auth.currentUser.uid;
+      db.doDeleteArticle(articleId, authorId)
+        .then(() => {
+          toastr.success('Article successfully deleted!');
+          displayArticles()(dispatch);
+          dispatch(pushUrl(`/`));
+        })
+        .catch(error => {
+          toastr.error("Sorry, we couldn't delete this article. Try again!")
+        });
+    })
+    .catch(error => {
+      dispatch(authError(error));
+      toastr.error('Wrong password!')
     });
 };

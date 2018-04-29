@@ -20,7 +20,7 @@ const validate = values => {
   return errors;
 };
 
-class DeleteAccount extends Component {
+class DeleteModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -46,8 +46,8 @@ class DeleteAccount extends Component {
   };
 
 
-  deleteAccount = (values) => {
-    this.props.secureSensitiveAction(this.state.password, 'deleteAccount');
+  delete = (values) => {
+    this.props.secureSensitiveAction(this.state.password, this.props.parameter);
     this.handleClose()
   }
 
@@ -55,7 +55,7 @@ class DeleteAccount extends Component {
     return (
       <div>
         <Button variant="raised" color="primary" onClick={this.handleClickOpen}>
-          Delete Account
+          {this.props.buttonText}
         </Button>
         <Dialog
           open={this.state.open}
@@ -65,9 +65,9 @@ class DeleteAccount extends Component {
           <DialogTitle id="form-dialog-title">Delete Account</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              This operation is permanent. Type in your password if you really want to delete your account.
+              {this.props.dialogContentText}
             </DialogContentText>
-            <form onSubmit={this.props.handleSubmit(this.deleteAccount)}>
+            <form onSubmit={this.props.handleSubmit(this.delete)}>
               <Field
                 name="password"
                 component={renderTextField}
@@ -88,10 +88,10 @@ class DeleteAccount extends Component {
             <Button
               variant="raised"
               disabled={this.state.password === ''}
-              onClick={this.deleteAccount}
+              onClick={this.delete}
               color="primary"
             >
-              Delete Account
+              {this.props.buttonText}
             </Button>
           </DialogActions>
         </Dialog>
@@ -103,4 +103,4 @@ class DeleteAccount extends Component {
 export default reduxForm({
   form: 'confirmAccountDelete',
   validate
-})(DeleteAccount)
+})(DeleteModal)

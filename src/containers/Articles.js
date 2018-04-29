@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const mapStateToProps = (state) => {
   return {
-    articles: state.articles
+    articles: state.articles.articles
   }
 }
 
@@ -14,7 +14,6 @@ class Articles extends Component {
     return (
       <div>
         {this.props.articles ?
-
           Object.entries(this.props.articles).map( ([key, value]) => {
             return <Link key={key} to={'/articles/'+key}> {value.title} </Link>
           }) :

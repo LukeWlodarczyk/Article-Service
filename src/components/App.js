@@ -7,7 +7,6 @@ import ReduxToastr from 'react-redux-toastr';
 import { compose } from '../helpers/compose';
 import SignIn from '../containers/SignIn';
 import SignUp from '../containers/SignUp';
-import Home from '../containers/Home';
 import Navigation from './Navigation';
 import Account from '../containers/Account';
 import AccountSettings from '../containers/AccountSettings';

@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { secureSensitiveAction } from '../actions/index';
 import EmailSettings from './EmailSettings';
 import PasswordSettings from './PasswordSettings';
-import DeleteAccount from './DeleteAccount';
+import DeleteModal from './DeleteModal';
 import { compose } from '../helpers/compose';
 
 const TabContainer = ({ children, dir }) => (
@@ -48,7 +48,12 @@ class AccountSettings extends Component {
 
     return (
       <div className={classes.root}>
-        <DeleteAccount secureSensitiveAction={this.props.secureSensitiveAction} />
+        <DeleteModal
+          parameter='deleteAccount'
+          dialogContentText='This operation is permanent. Type in your password if you really want to delete your account.'
+          buttonText='Delete Account'
+          secureSensitiveAction={this.props.secureSensitiveAction}
+        />
         <AppBar position="static" color="default">
           <Tabs
             value={this.state.value}

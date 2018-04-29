@@ -13,8 +13,8 @@ const validate = (values) => {
     errors.title = "Title is required.";
   }
 
-  if (!values.articleBody) {
-    errors.articleBody = "Ofert description is required";
+  if (!values.body) {
+    errors.body = "Ofert description is required";
   }
 
   return errors;
@@ -22,11 +22,11 @@ const validate = (values) => {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    articles: state.articles,
+    articles: state.articles.articles,
     userId: state.auth.authenticated.uid,
     initialValues: {
-      title: state.articles[ownProps.match.params.id].title,
-      body: state.articles[ownProps.match.params.id].body
+      title: state.articles.articles[ownProps.match.params.id].title,
+      body: state.articles.articles[ownProps.match.params.id].body
     }
   }
 }
