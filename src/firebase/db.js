@@ -1,9 +1,13 @@
 import { db } from './firebase';
 
-export const doCreateUser = (id, username, email) =>
+export const doCreateUser = (id, {name, surname, email, age, photoUrl, about}) =>
   db.ref(`users/${id}`).set({
-    username,
+    name,
+    surname,
     email,
+    age,
+    photoUrl,
+    about
   });
 
 export const onceGetUsers = () =>
@@ -11,6 +15,9 @@ export const onceGetUsers = () =>
 
 export const doGetComments = (articleId) =>
   db.ref('comments/'+articleId).once('value');
+
+export const doGetUserInfo = (userId) =>
+  db.ref('users/'+userId).once('value');
 
 export const doCreateArticle = (articleId, {title, body, authorId, date}) => {
   const updates = {};
@@ -20,11 +27,11 @@ export const doCreateArticle = (articleId, {title, body, authorId, date}) => {
     body,
     authorId,
   };
-  // updates[`/${authorId}/${articleId}`] = {
-  //   title,
-  //   body,
-  //   authorId,
-  // };
+  updates[`/${authorId}/${articleId}`] = {
+    title,
+    body,
+    authorId,
+  };
   return db.ref().update(updates)
 }
 

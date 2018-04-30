@@ -32,10 +32,13 @@ class Article extends Component {
       return <div>Loading</div>
     }
 
-    const { title, body } = this.props.articles[this.props.match.params.id];
+    const { title, body, date } = this.props.articles[this.props.match.params.id];
     return (
       <article>
         <h2>{title}</h2>
+        <small>
+          {new Date(date).toLocaleDateString('en-EN', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})}
+        </small>
         <p>{body}</p>
         {this.props.userId === this.props.articles[this.props.match.params.id].authorId &&
           <div>

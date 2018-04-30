@@ -2,7 +2,7 @@ import { firebase, auth, db } from '../firebase/index';
 import { reset } from 'redux-form';
 import { replace, push } from "react-router-redux";
 import { SIGN_IN, ACCOUNT, ARTICLES } from '../constants/routes'
-import { AUTH_USER, AUTH_ERROR, SIGN_OUT_USER, DISPLAY_ARTICLES, DISPLAY_ARTICLE, DISPLAY_COMMENTS } from '../constants/action-types';
+import { AUTH_USER, AUTH_ERROR, SIGN_OUT_USER, DISPLAY_ARTICLES, DISPLAY_ARTICLE, DISPLAY_COMMENTS, DISPLAY_USER_INFO } from '../constants/action-types';
 import { toastr } from 'react-redux-toastr'
 
 export const replaceUrl = (url) => dispatch => {
@@ -67,7 +67,25 @@ export const signUpUser = ({ email, password }) => (dispatch) => {
   auth.doCreateUserWithEmailAndPassword(email, password)
     .then( user => {
       user.sendEmailVerification();
-      toastr.success('Welcome!')
+      toastr.success('Welcome! Check your email to verify your email!');
+
+      const userInfo = {
+        name: '',
+        surname: '',
+        email,
+        age: '',
+        photoUrl: 'http://simpleicon.com/wp-content/uploads/user1.png',
+        about: ''
+      }
+
+      db.doCreateUser(user.uid, userInfo)
+          .then(() => {
+            toastr.success('Update your profile info!');
+          })
+          .catch(error => {
+            toastr.error(error.message)
+          });
+
     })
     .catch(error => {
       dispatch(authError(error));
@@ -161,6 +179,19 @@ export const displayComments = (articleId) => (dispatch) => {
     })
     .catch( error => {
       toastr.error("Sorry, we couldn't get comments from database.")
+    })
+};
+
+export const displayUserInfo = (userId) => (dispatch) => {
+  db.doGetUserInfo(userId)
+    .then( snapshot => {
+      dispatch({
+        type: DISPLAY_USER_INFO,
+        payload: snapshot.val()
+      })
+    })
+    .catch( error => {
+      toastr.error("Sorry, we couldn't get user info from database.")
     })
 };
 
