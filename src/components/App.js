@@ -10,6 +10,7 @@ import SignUp from '../containers/SignUp';
 import Navigation from './Navigation';
 import Account from '../containers/Account';
 import AccountSettings from '../containers/AccountSettings';
+import AccountInfoEdit from '../containers/AccountInfoEdit';
 import AddArticle from '../containers/AddArticle';
 import EditArticle from '../containers/EditArticle';
 import Articles from '../containers/Articles';
@@ -64,6 +65,11 @@ class App extends Component {
             authenticated={authenticated}
             exact path={routes.ACCOUNT_SETTINGS}
             component={AccountSettings}
+          />
+          <PrivateRoute
+            authenticated={authenticated}
+            exact path={routes.ACCOUNT_INFO_EDIT}
+            component={AccountInfoEdit}
           />
           <SignInUpRoute
             authenticated={authenticated}

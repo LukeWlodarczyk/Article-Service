@@ -17,12 +17,12 @@ class Account extends Component {
   render() {
     const { userInfo } = this.props;
     let user = {
-      name: '',
-      surname: '',
-      email: '',
-      age: '',
+      name: '...',
+      surname: '...',
+      email: '...',
+      age: '...',
       photoUrl: 'http://simpleicon.com/wp-content/uploads/user1.png',
-      about: ''
+      about: '...'
     };
 
     if(userInfo) {
@@ -39,6 +39,11 @@ class Account extends Component {
       <div>
         <p>Account</p>
         <p>Email: {user.email}</p>
+        <p>-------------------</p>
+          {
+            this.props.authenticated.uid === this.props.match.params.id &&
+              <Link className="" to={"/users/"+ this.props.match.params.id +"/edit"}>Edit</Link>
+          }
         <p>Name: {user.name}</p>
         <p>Surname: {user.surname}</p>
         <p>Age: {user.age}</p>

@@ -210,6 +210,18 @@ export const createArticle = ({ title, body }) => (dispatch) => {
     });
 };
 
+export const editUserInfo = (userId, { name, surname, age, about }) => (dispatch) => {
+  db.doEditUserInfo(userId, name, surname, age, about)
+    .then(() => {
+      toastr.success('User-info successfully updated!');
+      displayUserInfo(userId)(dispatch);
+      dispatch(push(`/users/${userId}`));
+    })
+    .catch(error => {
+      toastr.error("Sorry, we couldn't update user-info. Try again!")
+    });
+};
+
 export const editArticle = (articleId, { title, body }) => (dispatch) => {
   db.doEditArticle(articleId, title, body)
     .then(() => {

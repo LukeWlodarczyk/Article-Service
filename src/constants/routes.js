@@ -7,3 +7,4 @@ export const EDIT_ARTICLE = '/articles/:id/edit';
 export const ARTICLES = '/';
 export const ARTICLE = '/articles/:id';
 export const ACCOUNT_SETTINGS = '/users/:id/settings';
+export const ACCOUNT_INFO_EDIT = '/users/:id/edit';
