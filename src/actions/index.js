@@ -1,4 +1,4 @@
-import { firebase, auth, db } from '../firebase/index';
+import { firebase, auth, db, storage } from '../firebase/index';
 import { reset } from 'redux-form';
 import { replace, push } from "react-router-redux";
 import { SIGN_IN, ACCOUNT, ARTICLES } from '../constants/routes'
@@ -220,6 +220,13 @@ export const editUserInfo = (userId, { name, surname, age, about }) => (dispatch
     .catch(error => {
       toastr.error("Sorry, we couldn't update user-info. Try again!")
     });
+};
+
+export const updateUserPhoto = (userId, photo) => (dispatch) => {
+  storage.doUpdateUserPhoto(photo)
+    .then( snapshot => {
+      db.doUpdateUserPhoto(snapshot.metadata.downloadURLs[0])
+    })
 };
 
 export const editArticle = (articleId, { title, body }) => (dispatch) => {

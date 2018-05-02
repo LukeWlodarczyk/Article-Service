@@ -2,10 +2,31 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { toastr } from 'react-redux-toastr';
 import { Link } from 'react-router-dom';
+import { Field, reduxForm } from 'redux-form';
+import { compose } from '../helpers/compose';
+import Button from 'material-ui/Button';
 import { displayUserInfo } from '../actions/index';
 
-class Account extends Component {
 
+const validate = (values) => {
+  const errors = {};
+
+  if (!values.image) {
+    errors.image = "Please attach a picture";
+  }
+
+  return errors;
+}
+
+const customFileInput = (field) => {
+  delete field.input.value; // <-- just delete the value property
+  return <input type="file" id="file" {...field.input} />;
+};
+
+class Account extends Component {
+  state = {
+    photo: null
+  }
   componentDidMount() {
     const { emailVerified, uid } = this.props.authenticated;
     if(!emailVerified && uid !== 'guest') {
@@ -14,14 +35,22 @@ class Account extends Component {
     this.props.displayUserInfo(this.props.match.params.id);
   }
 
+  handleChangePhoto = (values) => {
+    console.log('///////');
+    console.log(values);
+    // this.setState({
+    //   photo: event.target.files[0]
+    // })
+  }
+
   render() {
-    const { userInfo } = this.props;
+    const { userInfo, handleSubmit, authenticated } = this.props;
     let user = {
       name: '...',
       surname: '...',
       email: '...',
       age: '...',
-      photoUrl: 'http://simpleicon.com/wp-content/uploads/user1.png',
+      photoUrl: '...',
       about: '...'
     };
 
@@ -37,8 +66,25 @@ class Account extends Component {
     }
     return (
       <div>
+        <img src={user.photoUrl} alt=""/>
+        <form onSubmit={handleSubmit(this.handleChangePhoto)}>
+
+          <input
+            name='image'
+            accept="image/*"
+
+            id="raised-button-file"
+            multiple
+            type="file"
+            />
+            <Button type='submit' varian='raised' component="span" color='primary'>
+              Upload
+            </Button>
+
+
+        </form>
         <p>Account</p>
-        <p>Email: {user.email}</p>
+        <p>Email: {authenticated.email}</p>
         <p>-------------------</p>
           {
             this.props.authenticated.uid === this.props.match.params.id &&
@@ -64,4 +110,10 @@ const mapStateToProps = (state) => {
   }
 }
  
-export default connect(mapStateToProps, { displayUserInfo })(Account)
+export default compose(
+  connect(mapStateToProps, { displayUserInfo }),
+  reduxForm({
+    form: 'updatePhoto',
+    validate
+  })
+)(Account)

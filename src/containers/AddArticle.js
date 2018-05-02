@@ -36,7 +36,7 @@ class AddArticle extends Component {
           <form onSubmit={handleSubmit(this.addArticle)}>
             <Field name="title" component={renderTextField} className="" type="text" label="Title"/>
             <Field multiline rows="6" name="body" component={renderTextField} className="" type="text" label="Article body"/>
-            <Button variant="raised" type="submit" color="primary"  className="button-submit">
+            <Button variant="raised" type="submit" color="primary" className="button-submit">
               Add
             </Button>
           </form>

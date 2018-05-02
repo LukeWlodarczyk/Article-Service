@@ -1,10 +1,9 @@
 import { db } from './firebase';
 
-export const doCreateUser = (id, {name, surname, email, age, photoUrl, about}) =>
+export const doCreateUser = (id, {name, surname, age, photoUrl, about}) =>
   db.ref(`users/${id}`).set({
     name,
     surname,
-    email,
     age,
     photoUrl,
     about
@@ -27,21 +26,20 @@ export const doCreateArticle = (articleId, {title, body, authorId, date}) => {
     body,
     authorId,
   };
-  updates[`/${authorId}/${articleId}`] = {
-    title,
-    body,
-    authorId,
-  };
   return db.ref().update(updates)
 }
 
 export const doAddComment = (comment, commentId, articleId) =>
   db.ref().child('/comments/' + articleId + '/' + commentId).update(comment)
 
-
-
 export const doEditArticle = (articleId, title, body, authorId) =>
   db.ref().child('/articles/' + articleId).update({ title, body })
+
+export const doEditUserInfo = (userId, name, surname, age, about) =>
+  db.ref().child('/users/'+userId).update({ name, surname, age, about })
+
+export const doUpdateUserPhoto = (userId, photoUrl) =>
+  db.ref().child('/users/'+userId).update({ photoUrl })
 
 export const doDeleteArticle = (articleId, authorId) => {
   const updates = {};
@@ -50,7 +48,6 @@ export const doDeleteArticle = (articleId, authorId) => {
   updates['comments/'+ articleId] = null
   return db.ref().update(updates)
 }
-
 
 export const onceGetArticles = () =>
   db.ref('articles').once('value');

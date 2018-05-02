@@ -4,13 +4,13 @@ import Button from 'material-ui/Button';
 import { connect } from 'react-redux';
 import { renderTextField } from '../helpers/reduxFormField';
 import { compose } from '../helpers/compose';
-import { createArticle } from '../actions/index'
+import { editUserInfo } from '../actions/index'
 
 const validate = (values) => {
   const errors = {};
 
-  if (/^\d+$/.test(values.age)) {
-    errors.title = "Age must be a digit.";
+  if (!/^\d+$/.test(values.age)) {
+    errors.age = "Age must be a digit.";
   }
 
   return errors;
@@ -20,7 +20,7 @@ const validate = (values) => {
 class AccountInfoEdit extends Component {
 
   editProfileInfo = (values) => {
-    this.props.editUserInfo(values)
+    this.props.editUserInfo(this.props.match.params.id, values)
   };
 
   render() {
@@ -28,7 +28,7 @@ class AccountInfoEdit extends Component {
     return(
       <div className="container">
         <div className="">
-          <h2 className="">Add article</h2>
+          <h2 className="">Edit Info</h2>
           <form onSubmit={handleSubmit(this.editProfileInfo)}>
             <Field name="name" component={renderTextField} className="" type="text" label="Name"/>
             <Field name="surname" component={renderTextField} className="" type="text" label="Surname"/>
