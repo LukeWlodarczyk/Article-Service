@@ -5,7 +5,7 @@ import { deleteArticle, addComment, displayComments } from '../actions/index';
 import Button from 'material-ui/Button';
 import DeleteModal from './DeleteModal';
 import AddComment from './AddComment';
-import Comments from './Comments';
+import Comments from '../components/Comments';
 
 
 const mapStateToProps = (state) => {
