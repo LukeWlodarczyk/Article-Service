@@ -198,8 +198,9 @@ export const displayUserInfo = (userId) => (dispatch) => {
 export const createArticle = ({ title, body }) => (dispatch) => {
   const authorId = firebase.auth.currentUser.uid;
   const articleId = firebase.db.ref('/').child('articles').push().key;
+  const authorEmail = firebase.auth.currentUser.email;
   const date = new Date();
-  db.doCreateArticle(articleId, {title, body, authorId, date})
+  db.doCreateArticle(articleId, {title, body, authorId, authorEmail, date})
     .then(() => {
       toastr.success('Article successfully added!');
       displayArticles()(dispatch);

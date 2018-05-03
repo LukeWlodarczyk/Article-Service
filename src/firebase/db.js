@@ -18,13 +18,14 @@ export const doGetComments = (articleId) =>
 export const doGetUserInfo = (userId) =>
   db.ref('users/'+userId).once('value');
 
-export const doCreateArticle = (articleId, {title, body, authorId, date}) => {
+export const doCreateArticle = (articleId, {title, body, authorId, authorEmail, date}) => {
   const updates = {};
   updates['/articles/' + articleId] = {
     date,
     title,
     body,
     authorId,
+    authorEmail,
   };
   return db.ref().update(updates)
 }
