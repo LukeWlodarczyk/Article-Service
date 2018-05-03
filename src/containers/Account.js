@@ -7,7 +7,6 @@ import { compose } from '../helpers/compose';
 import Button from 'material-ui/Button';
 import { displayUserInfo } from '../actions/index';
 
-
 const validate = (values) => {
   const errors = {};
 
@@ -18,15 +17,9 @@ const validate = (values) => {
   return errors;
 }
 
-const customFileInput = (field) => {
-  delete field.input.value; // <-- just delete the value property
-  return <input type="file" id="file" {...field.input} />;
-};
 
 class Account extends Component {
-  state = {
-    photo: null
-  }
+
   componentDidMount() {
     const { emailVerified, uid } = this.props.authenticated;
     if(!emailVerified && uid !== 'guest') {
@@ -35,13 +28,21 @@ class Account extends Component {
     this.props.displayUserInfo(this.props.match.params.id);
   }
 
-  handleChangePhoto = (values) => {
-    console.log('///////');
-    console.log(values);
-    // this.setState({
-    //   photo: event.target.files[0]
-    // })
-  }
+  renderForm = field => {
+      const { input, label, type, meta: { touched, error } } = field;
+      const className = `form-group ${touched && error ? "has-error" : ""}`;
+      return (
+        <fieldset className={className}>
+          <label className='label-control'>{label}</label>
+          <div>
+            <input {...input} type={type}
+            className='form-control' />
+            {touched &&
+              error && <div className="alert alert-danger">{error}</div>}
+          </div>
+        </fieldset>
+      );
+    };
 
   render() {
     const { userInfo, handleSubmit, authenticated } = this.props;
@@ -67,22 +68,6 @@ class Account extends Component {
     return (
       <div>
         <img src={user.photoUrl} alt=""/>
-        <form onSubmit={handleSubmit(this.handleChangePhoto)}>
-
-          <input
-            name='image'
-            accept="image/*"
-
-            id="raised-button-file"
-            multiple
-            type="file"
-            />
-            <Button type='submit' varian='raised' component="span" color='primary'>
-              Upload
-            </Button>
-
-
-        </form>
         <p>Account</p>
         <p>Email: {authenticated.email}</p>
         <p>-------------------</p>

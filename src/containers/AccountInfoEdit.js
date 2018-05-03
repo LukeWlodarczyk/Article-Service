@@ -4,7 +4,8 @@ import Button from 'material-ui/Button';
 import { connect } from 'react-redux';
 import { renderTextField } from '../helpers/reduxFormField';
 import { compose } from '../helpers/compose';
-import { editUserInfo } from '../actions/index'
+import { editUserInfo } from '../actions/index';
+import FileField from '../components/FileField';
 
 const validate = (values) => {
   const errors = {};
@@ -23,11 +24,19 @@ class AccountInfoEdit extends Component {
     this.props.editUserInfo(this.props.match.params.id, values)
   };
 
+  submitForm = (values) => {
+    console.log(values);
+  };
+
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, photoUrl } = this.props;
     return(
       <div className="container">
         <div className="">
+          <form onSubmit={this.props.handleSubmit(this.submitForm)}>
+            <Field photoUrl={photoUrl} type="picture" name="picture" label="Picture" component={FileField} />
+            <button className="btn btn-primary" type="submit">Update</button>
+          </form>
           <h2 className="">Edit Info</h2>
           <form onSubmit={handleSubmit(this.editProfileInfo)}>
             <Field name="name" component={renderTextField} className="" type="text" label="Name"/>
@@ -46,11 +55,12 @@ class AccountInfoEdit extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    photoUrl: state.user.photoUrl,
     initialValues: {
       name: state.user.name,
       surname: state.user.surname,
       age: state.user.age,
-      about: state.user.about
+      about: state.user.about,
     }
   }
 }
