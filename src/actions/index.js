@@ -196,6 +196,9 @@ export const displayUserInfo = (userId) => (dispatch) => {
 };
 
 export const createArticle = ({ title, body }) => (dispatch) => {
+  if(!firebase.auth.currentUser.emailVerified) {
+    return toastr.error("Only verified users are allowed to add articles!")
+  }
   const authorId = firebase.auth.currentUser.uid;
   const articleId = firebase.db.ref('/').child('articles').push().key;
   const authorEmail = firebase.auth.currentUser.email;
@@ -207,7 +210,7 @@ export const createArticle = ({ title, body }) => (dispatch) => {
       dispatch(push(`/articles/${articleId}`));
     })
     .catch(error => {
-      toastr.error("Sorry, we couldn't create new article. Try again!")
+      toastr.error("Sorry, we couldn't create new article. Try again!");
     });
 };
 
@@ -243,6 +246,9 @@ export const editArticle = (articleId, { title, body }) => (dispatch) => {
 };
 
 export const addComment = (articleId, comment) => (dispatch) => {
+  if(!firebase.auth.currentUser.emailVerified) {
+    return toastr.error("Only verified users are allowed to add comments!")
+  }
   const commentId = firebase.db.ref('/').child('comments/'+articleId).push().key;
   const date = new Date();
   const commentObj = {
