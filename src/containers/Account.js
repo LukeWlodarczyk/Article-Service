@@ -21,28 +21,23 @@ const validate = (values) => {
 class Account extends Component {
 
   componentDidMount() {
-    const { emailVerified, uid } = this.props.authenticated;
-    if(!emailVerified && uid !== 'guest') {
-      toastr.info('Please verify your email')
-    };
+    this.displayNotification();
     this.props.displayUserInfo(this.props.match.params.id);
   }
 
-  renderForm = field => {
-      const { input, label, type, meta: { touched, error } } = field;
-      const className = `form-group ${touched && error ? "has-error" : ""}`;
-      return (
-        <fieldset className={className}>
-          <label className='label-control'>{label}</label>
-          <div>
-            <input {...input} type={type}
-            className='form-control' />
-            {touched &&
-              error && <div className="alert alert-danger">{error}</div>}
-          </div>
-        </fieldset>
-      );
+  componentDidUpdate(prevProps) {
+    if(this.props.match.params.id !== prevProps.match.params.id) {
+      this.displayNotification();
+      this.props.displayUserInfo(this.props.match.params.id);
+    }
+  }
+
+  displayNotification = () => {
+    const { emailVerified, uid } = this.props.authenticated;
+    if(!emailVerified && uid === this.props.match.params.id) {
+      toastr.info('Please verify your email')
     };
+  }
 
   render() {
     const { userInfo, handleSubmit, authenticated } = this.props;
@@ -67,9 +62,8 @@ class Account extends Component {
     }
     return (
       <div>
-        <img style={{ height: "300px"}} src={user.photoUrl} alt=""/>
-        <p>Account</p>
-        <p>Email: {authenticated.email}</p>
+        <img style={{ height: "300px"}} src={user.photoUrl} />
+        <h2>{user.email}</h2>
         <p>-------------------</p>
           {
             this.props.authenticated.uid === this.props.match.params.id &&

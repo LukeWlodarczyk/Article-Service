@@ -10,7 +10,11 @@ const validate = (values) => {
   const errors = {};
 
   if (!values.comment) {
-    errors.comment = "Title is required.";
+    errors.comment = "Comment body is required.";
+  }
+
+  if (values.comment && values.comment.length < 5) {
+    errors.comment = "Comment is too short.";
   }
 
   return errors;
@@ -30,7 +34,7 @@ class AddComment extends Component {
         <div className="">
           <h2 className="">Add Comment</h2>
           <form onSubmit={handleSubmit(this.addComment)}>
-            <Field multiline rows="6" name="comment" component={renderTextField} className="" type="text" label="Comment"/>
+            <Field multiline rows="6" name="comment" component={renderTextField} type="text" label="Comment"/>
             <Button variant="raised" type="submit" color="primary"  className="button-submit">
               Add
             </Button>

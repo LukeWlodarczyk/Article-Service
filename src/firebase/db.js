@@ -1,13 +1,10 @@
 import { db } from './firebase';
 
-export const doCreateUser = (id, {name, surname, age, photoUrl, about}) =>
-  db.ref(`users/${id}`).set({
-    name,
-    surname,
-    age,
-    photoUrl,
-    about
-  });
+export const doCreateUser = (id, { email, name, surname, age, photoUrl, about }) =>
+  db.ref(`users/${id}`).set({ email, name, surname, age, photoUrl, about });
+
+export const doDeleteUser = (authorId) =>
+  db.ref('/users/' + authorId).remove()
 
 export const onceGetUsers = () =>
   db.ref('users').once('value');
@@ -18,23 +15,14 @@ export const doGetComments = (articleId) =>
 export const doGetUserInfo = (userId) =>
   db.ref('users/'+userId).once('value');
 
-export const doCreateArticle = (articleId, {title, body, authorId, authorEmail, date}) => {
-  const updates = {};
-  updates['/articles/' + articleId] = {
-    date,
-    title,
-    body,
-    authorId,
-    authorEmail,
-  };
-  return db.ref().update(updates)
-}
+export const doCreateArticle = (articleId, { title, body, authorId, authorEmail, authorAvatar, date }) =>
+  db.ref('/articles/' + articleId).update({ title, body, authorId, authorEmail, authorAvatar, date });
 
 export const doAddComment = (comment, commentId, articleId) =>
   db.ref().child('/comments/' + articleId + '/' + commentId).update(comment)
 
-export const doEditArticle = (articleId, title, body, authorId) =>
-  db.ref().child('/articles/' + articleId).update({ title, body })
+export const doEditArticle = (articleId, { title, body, lastEdit }) =>
+  db.ref().child('/articles/' + articleId).update({ title, body, lastEdit })
 
 export const doEditUserInfo = (userId, name, surname, age, about) =>
   db.ref().child('/users/'+userId).update({ name, surname, age, about })
@@ -45,8 +33,7 @@ export const doUpdateUserPhoto = (userId, photoUrl) =>
 export const doDeleteArticle = (articleId, authorId) => {
   const updates = {};
   updates['/articles/' + articleId] = null
-  updates[`/${authorId}/${articleId}`] = null
-  updates['comments/'+ articleId] = null
+  updates['/comments/'+ articleId] = null
   return db.ref().update(updates)
 }
 

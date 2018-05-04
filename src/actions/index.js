@@ -4,6 +4,7 @@ import { replace, push } from "react-router-redux";
 import { SIGN_IN, ACCOUNT, ARTICLES } from '../constants/routes'
 import { AUTH_USER, AUTH_ERROR, SIGN_OUT_USER, DISPLAY_ARTICLES, DISPLAY_ARTICLE, DISPLAY_COMMENTS, DISPLAY_USER_INFO } from '../constants/action-types';
 import { toastr } from 'react-redux-toastr';
+import { initialUserInfo } from '../helpers/initialUserInfo';
 
 export const replaceUrl = (url) => dispatch => {
     dispatch(replace(url))
@@ -47,8 +48,6 @@ export const signOutUser = () => dispatch => {
     });
 };
 
-
-
 export const signInUser = ({ email, password }) => (dispatch) =>{
     auth.doSignInWithEmailAndPassword(email, password)
       .then( user => {
@@ -67,18 +66,11 @@ export const signUpUser = ({ email, password }) => (dispatch) => {
   auth.doCreateUserWithEmailAndPassword(email, password)
     .then( user => {
       user.sendEmailVerification();
+      user.updateProfile({
+        photoURL: initialUserInfo.photoUrl
+      });
       toastr.success('Welcome! Check your email to verify your email!');
-
-      const userInfo = {
-        name: '',
-        surname: '',
-        email,
-        age: '',
-        photoUrl: 'http://simpleicon.com/wp-content/uploads/user1.png',
-        about: ''
-      }
-
-      db.doCreateUser(user.uid, userInfo)
+      db.doCreateUser(user.uid, { ...initialUserInfo, email })
           .then(() => {
             toastr.success('Update your profile info!');
           })
@@ -115,11 +107,12 @@ export const secureSensitiveAction = (password, type, newData) => (dispatch) => 
   auth.doReauthenticate(credential)
     .then( () => {
       console.log('User reauthenticated');
+      const uid = firebase.auth.currentUser.uid;
 
       type === 'passwordUpdate' &&
         auth.doPasswordUpdate(newData)
           .then( () => {
-            dispatch(push('users'+firebase.auth.currentUser.uid));
+            dispatch(push('users'+uid));
             toastr.success('Password updated!');
           })
           .catch(error => {
@@ -130,7 +123,7 @@ export const secureSensitiveAction = (password, type, newData) => (dispatch) => 
       type === 'emailUpdate' &&
         auth.doEmailUpdate(newData)
           .then( () => {
-            dispatch(push('users'+firebase.auth.currentUser.uid));
+            dispatch(push('users'+uid));
             toastr.success('Email updated!');
           })
           .catch(error => {
@@ -141,8 +134,14 @@ export const secureSensitiveAction = (password, type, newData) => (dispatch) => 
       type === 'deleteAccount' &&
         auth.doDeleteAccount()
           .then( () => {
-            dispatch(push(ARTICLES));
-            toastr.success('Account successfully deleted!');
+            db.doDeleteUser(uid)
+            .then( () => {
+              dispatch(push(ARTICLES));
+              toastr.success('Account successfully deleted!');
+            })
+            .catch(error => {
+              toastr.error(error.message);
+            })
           })
           .catch(error => {
             toastr.error(error.message);
@@ -185,10 +184,20 @@ export const displayComments = (articleId) => (dispatch) => {
 export const displayUserInfo = (userId) => (dispatch) => {
   db.doGetUserInfo(userId)
     .then( snapshot => {
-      dispatch({
-        type: DISPLAY_USER_INFO,
-        payload: snapshot.val()
-      })
+      if(snapshot.val() !== null) {
+        dispatch({
+          type: DISPLAY_USER_INFO,
+          payload: snapshot.val()
+        })
+      } else {
+        dispatch({
+          type: DISPLAY_USER_INFO,
+          payload: {
+            ...initialUserInfo,
+            email: 'USER DELETED'
+          }
+        })
+      }
     })
     .catch( error => {
       toastr.error("Sorry, we couldn't get user info from database.")
@@ -196,14 +205,13 @@ export const displayUserInfo = (userId) => (dispatch) => {
 };
 
 export const createArticle = ({ title, body }) => (dispatch) => {
-  if(!firebase.auth.currentUser.emailVerified) {
-    return toastr.error("Only verified users are allowed to add articles!")
-  }
-  const authorId = firebase.auth.currentUser.uid;
+  // if(!firebase.auth.currentUser.emailVerified) {
+  //   return toastr.error("Only verified users are allowed to add articles!")
+  // }
   const articleId = firebase.db.ref('/').child('articles').push().key;
-  const authorEmail = firebase.auth.currentUser.email;
+  const { uid: authorId, email: authorEmail, photoURL: authorAvatar } = firebase.auth.currentUser;
   const date = new Date();
-  db.doCreateArticle(articleId, {title, body, authorId, authorEmail, date})
+  db.doCreateArticle(articleId, {title, body, authorId, authorEmail, authorAvatar, date})
     .then(() => {
       toastr.success('Article successfully added!');
       displayArticles()(dispatch);
@@ -231,6 +239,9 @@ export const updateUserPhoto = (userId, photo) => (dispatch) => {
     .then( snapshot => {
       db.doUpdateUserPhoto(userId, snapshot.metadata.downloadURLs[0])
         .then( () => {
+          firebase.auth.currentUser.updateProfile({
+            photoURL: snapshot.metadata.downloadURLs[0]
+          });
           toastr.success('User-image successfully updated!');
           dispatch(push(`/users/${userId}`));
         })
@@ -244,7 +255,8 @@ export const updateUserPhoto = (userId, photo) => (dispatch) => {
 };
 
 export const editArticle = (articleId, { title, body }) => (dispatch) => {
-  db.doEditArticle(articleId, title, body)
+  const lastEdit = new Date();
+  db.doEditArticle(articleId, { title, body, lastEdit })
     .then(() => {
       toastr.success('Article successfully edited!');
       displayArticles()(dispatch);
@@ -256,16 +268,17 @@ export const editArticle = (articleId, { title, body }) => (dispatch) => {
 };
 
 export const addComment = (articleId, comment) => (dispatch) => {
-  if(!firebase.auth.currentUser.emailVerified) {
-    return toastr.error("Only verified users are allowed to add comments!")
-  }
+  // if(!firebase.auth.currentUser.emailVerified) {
+  //   return toastr.error("Only verified users are allowed to add comments!")
+  // }
   const commentId = firebase.db.ref('/').child('comments/'+articleId).push().key;
   const date = new Date();
   const commentObj = {
     date,
     comment,
     authorId: firebase.auth.currentUser.uid,
-    authorEmail: firebase.auth.currentUser.email
+    authorEmail: firebase.auth.currentUser.email,
+    authorAvatar: firebase.auth.currentUser.photoURL
   }
   db.doAddComment(commentObj, commentId, articleId)
     .then(() => {

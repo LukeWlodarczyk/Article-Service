@@ -32,7 +32,7 @@ class AccountInfoEdit extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
   return {
     photoUrl: state.user.photoUrl,
     name: state.user.name,
