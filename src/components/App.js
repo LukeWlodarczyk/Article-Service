@@ -38,7 +38,7 @@ class App extends Component {
             timeOut={6000}
             newestOnTop={false}
             preventDuplicates
-            position="top-right"
+            position="bottom-right"
             transitionIn="bounceInDown"
             transitionOut="bounceOutUp"
             progressBar

@@ -3,7 +3,7 @@ import { reset } from 'redux-form';
 import { replace, push } from "react-router-redux";
 import { SIGN_IN, ACCOUNT, ARTICLES } from '../constants/routes'
 import { AUTH_USER, AUTH_ERROR, SIGN_OUT_USER, DISPLAY_ARTICLES, DISPLAY_ARTICLE, DISPLAY_COMMENTS, DISPLAY_USER_INFO } from '../constants/action-types';
-import { toastr } from 'react-redux-toastr'
+import { toastr } from 'react-redux-toastr';
 
 export const replaceUrl = (url) => dispatch => {
     dispatch(replace(url))
@@ -227,10 +227,20 @@ export const editUserInfo = (userId, { name, surname, age, about }) => (dispatch
 };
 
 export const updateUserPhoto = (userId, photo) => (dispatch) => {
-  storage.doUpdateUserPhoto(photo)
+  storage.doUpdateUserPhoto(userId, photo)
     .then( snapshot => {
-      db.doUpdateUserPhoto(snapshot.metadata.downloadURLs[0])
+      db.doUpdateUserPhoto(userId, snapshot.metadata.downloadURLs[0])
+        .then( () => {
+          toastr.success('User-image successfully updated!');
+          dispatch(push(`/users/${userId}`));
+        })
+        .catch(error => {
+          toastr.error(error.message);
+        });
     })
+    .catch(error => {
+      toastr.error(error.message);
+    });
 };
 
 export const editArticle = (articleId, { title, body }) => (dispatch) => {

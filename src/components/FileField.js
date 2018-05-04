@@ -30,32 +30,34 @@ class FileField extends Component {
  render() {
   const {input} = this.props;
   delete input.value;
-  return (<div>
-    <div className="form-group">
-      <div className='mb-4'>
-        <input
-          {...input}
-          id="file"
-          type="file"
-          accept="image/*"
-          onChange={this.handleChangePicture}
-          style={{
-            width: 0,
-            height: 0,
-            opacity: 0,
-            overflow: 'hidden',
-            position: 'absolute',
-            zIndex: 1
-          }}
-        />
-        <Button variant="raised" color="primary" component="label" htmlFor="file">
-          Choose an image
-        </Button>
+  return (
+    <div>
+      <div className="form-group">
+        <div className='mb-4'>
+          <input
+            {...input}
+            id="file"
+            type="file"
+            accept="image/*"
+            onChange={this.handleChangePicture}
+            style={{
+              width: 0,
+              height: 0,
+              opacity: 0,
+              overflow: 'hidden',
+              position: 'absolute',
+              zIndex: 1
+            }}
+          />
+          <Button variant="raised" color="primary" component="label" htmlFor="file">
+            Choose an image
+          </Button>
+        </div>
       </div>
+      <PreviewPicture pictureUrl={this.state.pictureUrl} picture={this.state.picture}/>
     </div>
-    <PreviewPicture pictureUrl={this.state.pictureUrl} picture={this.state.picture}/>
-  </div>);
-}
+  );
+  }
 }
 
 

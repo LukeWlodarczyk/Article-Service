@@ -4,8 +4,9 @@ import Button from 'material-ui/Button';
 import { connect } from 'react-redux';
 import { renderTextField } from '../helpers/reduxFormField';
 import { compose } from '../helpers/compose';
-import { editUserInfo } from '../actions/index';
+import { editUserInfo, updateUserPhoto } from '../actions/index';
 import FileField from '../components/FileField';
+import { toastr } from 'react-redux-toastr';
 
 const validate = (values) => {
   const errors = {};
@@ -25,7 +26,17 @@ class AccountInfoEdit extends Component {
   };
 
   submitForm = (values) => {
-    console.log(values);
+    if(!values.picture) {
+      return toastr.error("Please attach an image!")
+    }
+    if(values.picture[0].size > 100000) {
+      return toastr.error("Image size should be less than 100kb!")
+    }
+    if(!values.picture[0].type.includes('image')) {
+      return toastr.error("You have uploaded an invalid image file type!")
+    }
+    console.log(values.picture);
+    this.props.updateUserPhoto(this.props.match.params.id, values.picture[0])
   };
 
   render() {
@@ -35,9 +46,9 @@ class AccountInfoEdit extends Component {
         <div className="">
           <form onSubmit={this.props.handleSubmit(this.submitForm)}>
             <Field photoUrl={photoUrl} type="picture" name="picture" label="Picture" component={FileField} />
-              <Button variant="raised" type="submit" color="primary"  className="button-submit">
-                Update
-              </Button>
+            <Button variant="raised" type="submit" color="primary"  className="button-submit">
+              Update
+            </Button>
           </form>
           <h2 className="">Edit Info</h2>
           <form onSubmit={handleSubmit(this.editProfileInfo)}>
@@ -68,7 +79,7 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 export default compose(
-  connect(mapStateToProps, { editUserInfo }),
+  connect(mapStateToProps, { editUserInfo, updateUserPhoto }),
   reduxForm({
     form: 'editUserInfo',
     validate
