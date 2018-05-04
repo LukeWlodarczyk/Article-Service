@@ -67,7 +67,7 @@ class Account extends Component {
     }
     return (
       <div>
-        <img src={user.photoUrl} alt=""/>
+        <img style={{ height: "300px"}} src={user.photoUrl} alt=""/>
         <p>Account</p>
         <p>Email: {authenticated.email}</p>
         <p>-------------------</p>
