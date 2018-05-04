@@ -35,7 +35,9 @@ class AccountInfoEdit extends Component {
         <div className="">
           <form onSubmit={this.props.handleSubmit(this.submitForm)}>
             <Field photoUrl={photoUrl} type="picture" name="picture" label="Picture" component={FileField} />
-            <button className="btn btn-primary" type="submit">Update</button>
+              <Button variant="raised" type="submit" color="primary"  className="button-submit">
+                Update
+              </Button>
           </form>
           <h2 className="">Edit Info</h2>
           <form onSubmit={handleSubmit(this.editProfileInfo)}>
