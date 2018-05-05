@@ -30,7 +30,7 @@ export const doEditUserInfo = (userId, name, surname, age, about) =>
 export const doUpdateUserPhoto = (userId, photoUrl) =>
   db.ref().child('/users/'+userId).update({ photoUrl })
 
-export const doDeleteArticle = (articleId, authorId) => {
+export const doDeleteArticle = (articleId) => {
   const updates = {};
   updates['/articles/' + articleId] = null
   updates['/comments/'+ articleId] = null

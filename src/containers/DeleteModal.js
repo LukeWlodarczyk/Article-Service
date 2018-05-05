@@ -25,6 +25,7 @@ class DeleteModal extends Component {
     super(props);
     this.state = {
       open: false,
+      password: ''
     };
   }
 
@@ -46,9 +47,12 @@ class DeleteModal extends Component {
   };
 
 
-  delete = (values) => {
+  delete = () => {
     this.props.secureSensitiveAction(this.state.password, this.props.parameter);
     this.handleClose()
+    this.setState({
+      password: ''
+    });
   }
 
   render() {
@@ -101,6 +105,6 @@ class DeleteModal extends Component {
 }
 
 export default reduxForm({
-  form: 'confirmAccountDelete',
+  form: 'confirmDelete',
   validate
 })(DeleteModal)

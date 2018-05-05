@@ -17,7 +17,6 @@ class Articles extends Component {
           Object.entries(this.props.articles).map( ([key, value]) => {
             return <Link key={key} to={'/articles/'+key}> {value.title} </Link>
           }) :
-
         <div>No result!</div>}
       </div>
     );
