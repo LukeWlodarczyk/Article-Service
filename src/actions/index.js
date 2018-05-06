@@ -96,6 +96,20 @@ export const resetPassword = email => async (dispatch) => {
     };
 };
 
+export const updatePassword = (password, type, newPassword) => async (dispatch) => {
+  try {
+    const credential = auth.doCredentials({ email: firebase.auth.currentUser.email, password });
+    await auth.doReauthenticate(credential);
+    const uid = firebase.auth.currentUser.uid;
+    await auth.doPasswordUpdate(newPassword)
+    dispatch(push('users'+uid));
+    toastr.success('Password updated!');
+  } catch (e) {
+    dispatch(reset('passwordSettings'))
+    toastr.error(e.message);
+  }
+};
+
 
 export const secureSensitiveAction = (password, type, newData) => (dispatch) => {
 
@@ -216,7 +230,6 @@ export const editUserInfo = (userId, { name, surname, age, about }) => async (di
     toastr.error("Sorry, we couldn't update user-info. Try again!");
   };
 };
-
 
 export const updateUserPhoto = (userId, photo) => async (dispatch) => {
   try {
