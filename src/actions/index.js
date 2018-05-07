@@ -96,13 +96,12 @@ export const resetPassword = email => async (dispatch) => {
     };
 };
 
-export const updatePassword = (password, type, newPassword) => async (dispatch) => {
+export const updatePassword = (password, newPassword) => async (dispatch) => {
   try {
     const credential = auth.doCredentials({ email: firebase.auth.currentUser.email, password });
     await auth.doReauthenticate(credential);
-    const uid = firebase.auth.currentUser.uid;
     await auth.doPasswordUpdate(newPassword)
-    dispatch(push('users'+uid));
+    dispatch(push('/users/'+firebase.auth.currentUser.uid));
     toastr.success('Password updated!');
   } catch (e) {
     dispatch(reset('passwordSettings'))
@@ -110,60 +109,31 @@ export const updatePassword = (password, type, newPassword) => async (dispatch) 
   }
 };
 
+export const updateEmail = (password, newEmail) => async (dispatch) => {
+  try {
+    const credential = auth.doCredentials({ email: firebase.auth.currentUser.email, password });
+    await auth.doReauthenticate(credential);
+    await auth.doEmailUpdate(newEmail);
+    await db.doEditUserEmail(firebase.auth.currentUser.uid, newEmail)
+    dispatch(push('/users/'+firebase.auth.currentUser.uid));
+    toastr.success('Email updated!');
+  } catch (e) {
+    dispatch(reset('emailSettings'));
+    toastr.error(e.message);
+  }
+};
 
-export const secureSensitiveAction = (password, type, newData) => (dispatch) => {
-
-  const credential = auth.doCredentials({ email: firebase.auth.currentUser.email, password });
-
-  auth.doReauthenticate(credential)
-    .then( () => {
-      console.log('User reauthenticated');
-      const uid = firebase.auth.currentUser.uid;
-
-      type === 'passwordUpdate' &&
-        auth.doPasswordUpdate(newData)
-          .then( () => {
-            dispatch(push('users'+uid));
-            toastr.success('Password updated!');
-          })
-          .catch(error => {
-            dispatch(reset('passwordSettings'))
-            toastr.error(error.message);
-          })
-
-      type === 'emailUpdate' &&
-        auth.doEmailUpdate(newData)
-          .then( () => {
-            dispatch(push('users'+uid));
-            toastr.success('Email updated!');
-          })
-          .catch(error => {
-            dispatch(reset('emailSettings'))
-            toastr.error(error.message);
-          })
-
-      type === 'deleteAccount' &&
-        auth.doDeleteAccount()
-          .then( () => {
-            db.doDeleteUser(uid)
-            .then( () => {
-              dispatch(push(ARTICLES));
-              toastr.success('Account successfully deleted!');
-            })
-            .catch(error => {
-              toastr.error(error.message);
-            })
-          })
-          .catch(error => {
-            toastr.error(error.message);
-          })
-    })
-    .catch(error => {
-      dispatch(authError(error));
-      dispatch(reset('passwordSettings'))
-      dispatch(reset('emailSettings'))
-      toastr.error('Wrong password!')
-    });
+export const deleteAccount = (password) => async (dispatch) => {
+  try {
+    const credential = auth.doCredentials({ email: firebase.auth.currentUser.email, password });
+    await auth.doReauthenticate(credential);
+    await db.doDeleteUser(firebase.auth.currentUser.uid)
+    await auth.doDeleteAccount();
+    dispatch(push(ARTICLES));
+    toastr.success('Account successfully deleted!');
+  } catch (e) {
+    toastr.error(e.message);
+  }
 };
 
 export const displayArticles = () => async (dispatch) => {
@@ -268,12 +238,13 @@ export const addComment = (articleId, comment) => async (dispatch) => {
       // }
       const commentId = firebase.db.ref('/').child('comments/'+articleId).push().key;
       const date = new Date();
+      const { uid: authorId, email: authorEmail, photoURL: authorAvatar } = firebase.auth.currentUser;
       const commentObj = {
         date,
         comment,
-        authorId: firebase.auth.currentUser.uid,
-        authorEmail: firebase.auth.currentUser.email,
-        authorAvatar: firebase.auth.currentUser.photoURL
+        authorId,
+        authorEmail,
+        authorAvatar,
       }
       await db.doAddComment(commentObj, commentId, articleId)
       toastr.success('Comment successfully added!');

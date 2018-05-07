@@ -50,7 +50,7 @@ const styles = theme => ({
 class PasswordSettings extends Component {
 
   handleChangePassword = (values) => {
-    this.props.secureSensitiveAction(values.currentPassword, 'passwordUpdate', values.newPassword);
+    this.props.updatePassword(values.currentPassword, values.newPassword);
   };
 
   render() {

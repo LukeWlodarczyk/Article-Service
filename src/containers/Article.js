@@ -50,7 +50,7 @@ class Article extends Component {
               parameter={this.props.match.params.id}
               dialogContentText='This operation is permanent. Type in your password if you really want to delete this article.'
               buttonText='Delete Article'
-              secureSensitiveAction={this.props.deleteArticle}
+              delete={this.props.deleteArticle}
             />
           </div>
         }

@@ -34,9 +34,7 @@ class DeleteModal extends Component {
   };
 
   handleClose = () => {
-    this.setState({
-      open: false,
-    });
+    this.setState({ open: false });
     this.props.reset()
   };
 
@@ -48,7 +46,7 @@ class DeleteModal extends Component {
 
 
   delete = () => {
-    this.props.secureSensitiveAction(this.state.password, this.props.parameter);
+    this.props.delete(this.state.password, this.props.parameter);
     this.handleClose()
     this.setState({
       password: ''

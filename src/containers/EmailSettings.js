@@ -38,7 +38,7 @@ const styles = theme => ({
 class EmailSettings extends Component {
 
   handleChangeEmail = (values) => {
-    this.props.secureSensitiveAction(values.password, 'emailUpdate', values.newEmail);
+    this.props.updateEmail(values.password, values.newEmail);
   };
 
   render() {

@@ -6,7 +6,7 @@ import AppBar from 'material-ui/AppBar';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import Typography from 'material-ui/Typography';
 import { connect } from 'react-redux';
-import { secureSensitiveAction, replaceUrl } from '../actions/index';
+import { updateEmail, updatePassword, deleteAccount, replaceUrl } from '../actions/index';
 import EmailSettings from './EmailSettings';
 import PasswordSettings from './PasswordSettings';
 import DeleteModal from './DeleteModal';
@@ -58,7 +58,7 @@ class AccountSettings extends Component {
           parameter='deleteAccount'
           dialogContentText='This operation is permanent. Type in your password if you really want to delete your account.'
           buttonText='Delete Account'
-          secureSensitiveAction={this.props.secureSensitiveAction}
+          delete={this.props.deleteAccount}
         />
         <AppBar position="static" color="default">
           <Tabs
@@ -79,10 +79,10 @@ class AccountSettings extends Component {
           onChangeIndex={this.handleChangeIndex}
         >
           <TabContainer dir={theme.direction}>
-            <PasswordSettings secureSensitiveAction={this.props.secureSensitiveAction} />
+            <PasswordSettings updatePassword={this.props.updatePassword} />
           </TabContainer>
           <TabContainer dir={theme.direction}>
-            <EmailSettings secureSensitiveAction={this.props.secureSensitiveAction} />
+            <EmailSettings updateEmail={this.props.updateEmail} />
           </TabContainer>
         </SwipeableViews>
       </div>
@@ -103,5 +103,5 @@ AccountSettings.propTypes = {
 
 export default compose(
   withStyles(styles, { withTheme: true }),
-  connect(mapStateToProps, { secureSensitiveAction, replaceUrl })
+  connect(mapStateToProps, { updateEmail, updatePassword, deleteAccount, replaceUrl })
 )(AccountSettings);
